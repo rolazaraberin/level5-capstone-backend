@@ -1,0 +1,15 @@
+#home {
+  .carousel {
+    &-inner {
+      max-width: 50rem;
+      margin: auto;
+    }
+  }
+  ul {
+    display: grid;
+    row-gap: 1rem;
+    max-width: 40rem;
+    text-align: start;
+    margin: auto;
+  }
+}

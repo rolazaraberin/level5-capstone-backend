@@ -1,0 +1,21 @@
+@use "sass:list"; //BUILT-IN MODULE
+@import "fonts-custom.scss"; //CUSTOM FONT VARIABLES
+$fontFamily: null !default; //NULL WILL USE DEFAULT FONTS
+
+@if list.index($fontFamily, "Audiowide") {
+  @import "https://fonts.googleapis.com/css?family=Audiowide";
+} @else if list.index($fontFamily, "Cormorant") {
+  @import "https://fonts.googleapis.com/css?family=Cormorant";
+} @else if list.index($fontFamily, "Press Start 2P") {
+  @import "https://fonts.googleapis.com/css?family=Press+Start+2P";
+} @else if list.index($fontFamily, "Sacramento") {
+  @import "https://fonts.googleapis.com/css?family=Sacramento";
+} @else if list.index($fontFamily, "Caveat") {
+  @import "https://fonts.googleapis.com/css?family=Caveat";
+} @else if list.index($fontFamily, "Shadows Into Light") {
+  @import "https://fonts.googleapis.com/css?family=Shadows+Into+Light";
+} @else if list.index($fontFamily, "Roboto Flex") {
+  @import "https://fonts.googleapis.com/css?family=Roboto+Flex";
+} @else if list.index($fontFamily, "Dancing Script") {
+  @import "https://fonts.googleapis.com/css?family=Dancing+Script";
+}

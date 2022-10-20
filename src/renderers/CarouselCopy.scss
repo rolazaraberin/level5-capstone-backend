@@ -1,0 +1,91 @@
+.CarouselImageTabs_tabImage__Dq2Hg {
+  max-width: 60px;
+  position: relative;
+  height: 60px;
+  margin: 0 auto;
+}
+
+.CarouselImageTabs_tabInner__g9vm9 {
+  height: 100%;
+  padding: 7px 7px 20px;
+}
+.CarouselImageTabs_tab__Q5Jfe {
+  width: 100px;
+  min-width: 100px;
+  padding-bottom: 10px;
+  position: relative;
+  cursor: pointer;
+}
+// .CarouselImageTabs_tabImage__Dq2Hg {
+//   height: 100px;
+
+//   img {
+//     height: 100%;
+//   }
+// }
+.color {
+  color: #ffff !important ;
+}
+.btn-blue:hover {
+  color: #008ebe !important ;
+}
+@media only screen and (min-width: 768px) {
+  .head_tesxt {
+    margin-top: 18%;
+  }
+}
+
+.style1 {
+  box-sizing: border-box;
+  display: block;
+  overflow: hidden;
+  // width: initial;
+  // height: initial;
+  width: initial;
+  height: 100px;
+  background: none;
+  opacity: 1;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.style2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;
+  margin: auto;
+  display: block;
+  width: 0;
+  height: 0;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center center;
+}
+
+.style3 {
+  color: #3d3935;
+  font-weight: 900;
+}
+
+.style4 {
+  color: #009ace;
+}
+
+.style5 {
+  margin: 10px;
+  color: #ffffff;
+}

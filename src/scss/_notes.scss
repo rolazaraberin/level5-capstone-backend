@@ -1,0 +1,214 @@
+/**********************************
+* NOTES
+**********************************/
+
+/*PROBLEM: Setting $theme-colors removes Bootstrap's values
+$theme-colors: (
+  "primary": #dc3545,
+  "secondary": #dc3545
+);
+*/
+
+/*SOLUTION: Replace unused values with null
+@mixin theme-colors {
+  $primary: #dc3545;
+  $secondary: #dc3545;
+  $success: null;
+  $info: null;
+  $warning: null;
+  $danger: null;
+  $light: null;
+  $dark: null;
+}
+*/
+
+/*SOLUTION: Set only the variables you want to change
+$primary: red;
+$secondary: blue;
+*/
+
+/*SOLUTION: Keep values in $theme-colors by including all the keys, then add your own. 
+$theme-colors: (
+  "primary": #dc3545,
+  "secondary": #dc3545,
+  "success": #dc3545,
+  "info": #dc3545,
+  "warning": #dc3545,
+  "danger": #dc3545,
+  "light": #dc3545,
+  "dark": #dc3545,
+
+  "altprimary": #dc3545,
+  "altsecondary": #dc3545,
+  "altsuccess": #dc3545,
+  "altinfo": #dc3545,
+  "altwarning": #dc3545,
+  "altdanger": #dc3545,
+  "altlight": #dc3545,
+  "altdark": pink,
+);
+*/
+
+/*SOLUTION: Define custom colors then map together with $theme-colors
+$custom-theme-colors: (
+  "primary": purple,
+  "altprimary": #dc3545,
+  "altsecondary": #dc3545,
+  "altsuccess": #dc3545,
+  "altinfo": #dc3545,
+  "altwarning": #dc3545,
+  "altdanger": #dc3545,
+  "altlight": #dc3545,
+  "altdark": pink,
+);
+//NOTE: Must do these imports to use map
+@import "./scss/_functions.scss";
+@import "./scss/_variables.scss";
+$theme-colors: map-merge($theme-colors, $custom-theme-colors);
+*/
+
+/*SOLUTION: Use @mixin and @include to inject variable values
+//NOTE: !global must be used because variables in {} are local
+@mixin dark-theme-colors {
+  $primary: white !global;
+  $secondary: #363636 !global;
+  $info: #00b3ff !global;
+  $light: #606060 !global;
+  $dark: black !global;
+}
+//@include dark-theme-colors;
+*/
+
+/*PROBLEM: !global is being deprecated
+@mixin dark-theme-colors {
+  $primary: white !global;
+  $secondary: #363636 !global;
+}
+*/
+
+/*SOLUTION: Declare variables globally, then their values will change when defined locally
+$use-dark-theme: false;
+$primary: null;
+$secondary: null;
+$info: null;
+$light: null;
+$dark: null;
+
+html {
+  .use-dark-theme {
+    $use-dark-theme: true;
+  }
+}
+
+@if use-dark-theme {
+  $primary: white;
+  $secondary: #363636;
+  $info: #00b3ff;
+  $light: #606060;
+  $dark: black;
+}
+*/
+
+/*EXPERIMENT: Create a dark theme
+$dark-theme-colors: (
+  "primary": white,
+  "secondary": #363636,
+  "info": #00b3ff,
+  "light": #606060,
+  "dark": black,
+);
+@import "./scss/_functions.scss";
+@import "./scss/_variables.scss";
+$theme-colors: map-merge($theme-colors, $dark-theme-colors);
+*/
+
+/*Defining Bootstrap doesn't work after the Bootstrap @import
+$primary: white;
+$secondary: #363636;
+*/
+
+/**********************************
+* GRADIENT NOTES
+**********************************/
+
+/*
+//PROGRAMATICALLY CREATE CLASSES
+$gradientOrientations: horizontal, vertical, radial;
+$gradientColors: primary, secondary, $info, $dark, $light;
+@each $color in $bootstrapColors {
+  .gradient- {
+    $mainColor: $color;
+  }
+}
+*/
+
+/*
+gradient-primary {
+  $mainColor: $primary;
+
+  &.gradient-radial-offset {
+    @include gradientRadialOffset;
+  }
+}
+
+//GRADIENT USES BOOTSTRAP COLORS
+.gradient- {
+  &primary {
+    $mainColor: $primary;
+  }
+  &secondary {
+    $mainColor: $secondary;
+  }
+  &info {
+    $mainColor: $info;
+  }
+  &dark {
+    $mainColor: $dark;
+  }
+  &light {
+    $mainColor: $light;
+  }
+}
+*/
+
+//DECLARE VARIABLES GLOBALLY TO MAKE THEM ACCESSIBLE BY ALL SCOPES
+/*
+$mainColor: gray !default;
+$altColor: lightgray;
+*/
+
+/*
+//GRADIENT ORIENTATIONS
+.gradient- {
+  &horizontal {
+    @include gradientHorizontal;
+    //background-image: linear-gradient(to right, $mainColor, $altColor);
+  }
+  &horizontal-center {
+    @include gradientHorizontalCenter;
+
+    // background-image: linear-gradient(
+    //   to right,
+    //   $altColor,
+    //   $mainColor,
+    //   $altColor
+    // );
+  }
+  &vertical {
+    background-image: linear-gradient($altColor, $mainColor 50%, $altColor);
+  }
+  &radial {
+    background-image: radial-gradient($mainColor, $altColor);
+  }
+  &radial-offset {
+    @debug $mainColor;
+    $offset-x: 50%;
+    $offset-y: 120%;
+    background-image: radial-gradient(
+      at $offset-x $offset-y,
+      $mainColor,
+      $altColor
+    );
+  }
+}
+*/

@@ -1,0 +1,143 @@
+/****************************
+* DEFAULT AND FIXED STLYES
+****************************/
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
+.grid {
+  /*NOTE: Bootstrap has a grid class, but it's disabled by default*/
+  display: grid;
+  row-gap: 1rem;
+  column-gap: 1rem;
+  //grid-auto-columns: max-content;
+  //grid-auto-rows: min-content;
+  &-cols-2 {
+    grid-template-areas: ". .";
+  }
+  &-cols-3 {
+    grid-template-areas: ". . .";
+  }
+}
+.grid-rows-3 {
+  grid-auto-flow: row;
+}
+.grid-auto-cols {
+  grid-auto-flow: cols;
+}
+.fit-content {
+  width: fit-content;
+}
+
+//MARGIN - FINE ADJUSTMENT
+.m- {
+  &01 {
+    margin: 0.1rem;
+  }
+  &02 {
+    margin: 0.2rem;
+  }
+  &03 {
+    margin: 0.3rem;
+  }
+  &04 {
+    margin: 0.4rem;
+  }
+  &05 {
+    margin: 0.5rem;
+  }
+}
+
+//HEIGHT
+.h- {
+  &10 {
+    //.height-12
+    height: 1rem;
+  }
+  &12 {
+    //.height-12
+    height: 1.2rem;
+  }
+  &15 {
+    height: 1.5rem;
+  }
+  &20 {
+    height: 2rem;
+  }
+  &25 {
+    height: 2.5rem;
+  }
+  &30 {
+    height: 3rem;
+  }
+  &100 {
+    height: 100%;
+  }
+}
+.h-min- {
+  &1 {
+    min-height: 10vh;
+  }
+  &2 {
+    min-height: 20vh;
+  }
+  &3 {
+    min-height: 30vh;
+  }
+  &4 {
+    min-height: 40vh;
+  }
+  &5 {
+    min-height: 50vh;
+  }
+  &6 {
+    min-height: 60vh;
+  }
+  &7 {
+    min-height: 70vh;
+  }
+  &8 {
+    min-height: 80vh;
+  }
+  &9 {
+    min-height: 90vh;
+  }
+  &10 {
+    min-height: 100vh;
+  }
+}
+
+//WIDTH
+.w- {
+  &80 {
+    width: 80%;
+  }
+  &50 {
+    width: 50%;
+  }
+}
+
+.list-style-none {
+  list-style: none;
+}
+code {
+  color: goldenrod !important;
+  font-size: 1rem !important;
+  pre {
+    background-color: $dark;
+    padding: 0.2rem;
+    border-radius: 0.5rem;
+  }
+}
+.hover {
+  //cursor: pointer;
+
+  &-pointer:hover {
+    cursor: pointer;
+  }
+  &-visibility:hover {
+    display: block;
+  }
+  &-visibility {
+    display: none;
+  }
+}
