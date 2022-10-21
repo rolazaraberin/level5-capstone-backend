@@ -172,6 +172,7 @@ function getResolveOptions() {
       assets: path.resolve("./src/assets/"),
       bootstrap: path.resolve("./node_modules/bootstrap/"),
       components: path.resolve("./src/components/"),
+      project: path.resolve("./src/project/"),
       public: path.resolve("./public/"),
       renderers: path.resolve("./src/renderers/"),
       scripts: path.resolve("./src/scripts/"),

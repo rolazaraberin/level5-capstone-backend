@@ -12,8 +12,8 @@
     "webpack": "webpack --config webpack.config.production.js",
     "server": "nodemon ./server/index.js",
     "watch": "webpack --watch",
-    "insert-tables": "knex migrate:latest",
-    "insert-data": "knex seed:run"
+    "insert-tables": "knex migrate:latest --env remote",
+    "insert-data": "knex seed:run --env remote"
   },
   "keywords": [],
   "author": "",
