@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import BuyNow from "./BuyNow";
 import { location } from "components/NavigationHooks";
-
+import { URL } from "renderers/MainNavbar";
 export default View;
 
 function View() {
@@ -32,7 +32,7 @@ function View() {
   );
 
   function componentDidUpdate() {
-    if (location.pathname === "/skill7-buy") setIsBuying(true);
+    if (location.pathname === URL.onlineStoreBuy) setIsBuying(true);
   }
   function handleEdit() {
     setDoEditCart(true);

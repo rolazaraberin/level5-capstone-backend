@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Modal, ButtonGroup, Button } from "react-bootstrap";
 //import { isEmpty } from "scripts/utilityFunctions";
 import { navigateTo } from "components/NavigationHooks";
+import { URL } from "renderers/MainNavbar";
 
 export default Cart;
 
@@ -79,7 +80,7 @@ function Cart({
     return () => dispatch(addItem(item));
   }
   function handleBuy() {
-    navigateTo("/skill7-buy");
+    navigateTo(URL.onlineStoreBuy);
   }
   function handleRemove(item: item) {
     return () => dispatch(removeItem(item));

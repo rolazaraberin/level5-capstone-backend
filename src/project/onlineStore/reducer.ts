@@ -6,7 +6,8 @@ import { getItems } from "./database";
 
 const slice = createSlice({
   name: "cart",
-  initialState: getInitialState(),
+  // initialState: getInitialState(),
+  initialState: getInitialState,
   reducers: {
     addItem: _addItem as any,
     removeItem: _removeItem as any,
@@ -18,9 +19,9 @@ export const { addItem, removeItem } = slice.actions;
 
 /*****************************************/
 
-async function getInitialState() {
+function getInitialState() {
+  // async function getInitialState() {
   // const items = await getItems();
-  debugger;
   const items: item[] = [
     { name: "laptop", price: 1000 },
     { name: "case", price: 30 },

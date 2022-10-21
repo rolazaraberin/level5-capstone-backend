@@ -4,7 +4,7 @@ import Title from "components/Title";
 import Subtitle from "components/Subtitle";
 import Links from "components/Links";
 
-function Skills() {
+function Project() {
   return (
     <>
       <Layout.Banner>
@@ -45,4 +45,4 @@ function Skills() {
   );
 }
 
-export default Skills;
+export default Project;

@@ -11,6 +11,7 @@ import { generateKey } from "scripts/utilityFunctionsReact";
 import Cart from "./Cart";
 import { addItem, removeItem } from "./reducer";
 import { item, state } from "./types";
+import { URL } from "renderers/MainNavbar";
 
 export default BuyNow;
 
@@ -32,12 +33,6 @@ function BuyNow({ editCart }: { editCart: Function }) {
         </Subtitle>
       </Layout.Banner>
       <Layout.Content>
-        <ol>
-          <li>Click on "Edit Cart"</li>
-          <li>Empty the cart</li>
-          <li>Site gets re-routed back to shopping</li>
-        </ol>
-        <hr />
         <table>
           <tbody>{cart}</tbody>
         </table>
@@ -51,7 +46,7 @@ function BuyNow({ editCart }: { editCart: Function }) {
   //***************************************************
 
   function componentDidUpdate() {
-    if (cartItems.length === 0) navigateTo("/skill7");
+    if (cartItems.length === 0) navigateTo(URL.onlineStore);
     else {
       const _cart = reduce(cartItems, toCart);
       setCart(_cart);
@@ -62,7 +57,7 @@ function BuyNow({ editCart }: { editCart: Function }) {
     // setHideCart(false);
   }
   function handleBack() {
-    navigateTo("/skill7");
+    navigateTo(URL.onlineStore);
   }
   function toCart(
     cart: ReactElement[],

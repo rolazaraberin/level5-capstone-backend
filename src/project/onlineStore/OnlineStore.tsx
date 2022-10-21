@@ -6,9 +6,9 @@ import Subtitle from "components/Subtitle";
 import { useNavigate } from "react-router-dom";
 import View from "./View";
 
-export default Skill7;
+export default OnlineStore;
 
-function Skill7() {
+function OnlineStore() {
   const navigateTo = useNavigate();
   return (
     <>
