@@ -13,7 +13,8 @@
     "server": "nodemon ./server/index.js",
     "watch": "webpack --watch",
     "insert-tables": "knex migrate:latest --env remote",
-    "insert-data": "knex seed:run --env remote"
+    "insert-data": "knex seed:run --env remote",
+    "rollback-tables": "knex migrate:rollback --env remote"
   },
   "keywords": [],
   "author": "",

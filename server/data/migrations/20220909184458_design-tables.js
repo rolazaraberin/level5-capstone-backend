@@ -2,7 +2,8 @@ module.exports = { up, down };
 
 async function up(table) {
   return table.schema.createTable("item", function (row) {
-    row.integer("id").primary();
+    // row.integer("id").primary();
+    row.increments("id").primary();
     row.string("name");
     row.float("price");
     row.string("image");

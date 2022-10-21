@@ -2,7 +2,8 @@ const config = require("../../../knexfile");
 const _knex = require("knex");
 module.exports = apiDelete;
 
-const knex = _knex(config.development);
+// const knex = _knex(config.development);
+const knex = _knex(config.remote);
 
 async function apiDelete(request, response) {
   try {

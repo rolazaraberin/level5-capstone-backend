@@ -11,12 +11,18 @@ async function seed(knex) {
 
   // Inserts seed entries
   await knex("item").insert([
-    { id: 1, name: "laptop", price: 1000 },
-    { id: 2, name: "case", price: 30 },
-    { id: 3, name: "charger", price: 15 },
-    { id: 4, name: "stylus", price: 35 },
-    { id: 5, name: "mouse", price: 10 },
-    { id: 6, name: "keyboard", price: 15 },
+    { name: "laptop", price: 1000 },
+    { name: "case", price: 30 },
+    { name: "charger", price: 15 },
+    { name: "stylus", price: 35 },
+    { name: "mouse", price: 10 },
+    { name: "keyboard", price: 15 },
+    // { id: 1, name: "laptop", price: 1000 },
+    // { id: 2, name: "case", price: 30 },
+    // { id: 3, name: "charger", price: 15 },
+    // { id: 4, name: "stylus", price: 35 },
+    // { id: 5, name: "mouse", price: 10 },
+    // { id: 6, name: "keyboard", price: 15 },
   ]);
   // await knex("mentor").insert([
   //   { id: 1, name: "Byron" },
