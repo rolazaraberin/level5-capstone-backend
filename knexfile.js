@@ -8,24 +8,28 @@ const config = {
   development: {
     client: "better-sqlite3",
     connection: {
-      filename: "./server/data/db.sqlite",
+      filename: "./src/data/db.sqlite",
     },
     migrations: {
-      directory: "./server/data/migrations",
+      directory: "./src/data/migrations",
     },
     seeds: {
-      directory: "./server/data/seeds",
+      directory: "./src/data/seeds",
     },
     useNullAsDefault: true,
   },
   remote: {
     client: "pg",
-    connection: process.env.remoteURL, //CONNECT TO ELEPHANTSQL.COM
+    // connection: process.env.remoteURL, //CONNECT TO ELEPHANTSQL.COM
+    connection: {
+      connectionString: process.env.remoteURL, //CONNECT TO ELEPHANTSQL.COM
+      ssl: { rejectUnauthorized: false },
+    },
     migrations: {
-      directory: "./server/data/migrations",
+      directory: "./src/data/migrations",
     },
     seeds: {
-      directory: "./server/data/seeds",
+      directory: "./src/data/seeds",
     },
     useNullAsDefault: true,
   },
