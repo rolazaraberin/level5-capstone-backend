@@ -6,36 +6,23 @@
   "mainHTML": "src/index.html",
   "scripts": {
     "test": "jest --watchAll",
-    "start": "webpack serve --hot --config webpack.config.devserver.js",
-    "build": "webpack --config webpack.config.production.js",
+    "start": "nodemon ./src/index.js",
     "deploy": "git push heroku main",
-    "webpack": "webpack --config webpack.config.production.js",
-    "server": "nodemon ./server/index.js",
-    "watch": "webpack --watch",
-    "insert-tables": "knex migrate:latest --env remote",
-    "insert-data": "knex seed:run --env remote",
-    "rollback-tables": "knex migrate:rollback --env remote"
+    "server": "nodemon ./src/index.js",
+    "tables": "knex migrate:latest --env remote",
+    "data": "knex seed:run --env remote",
+    "rollback": "knex migrate:rollback --env remote"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@reduxjs/toolkit": "^1.8.3",
-    "axios": "^1.1.2",
     "better-sqlite3": "^7.6.2",
-    "bootstrap": "^5.2.0",
-    "chromedriver": "^106.0.0",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "knex": "^2.3.0",
     "lodash": "^4.17.21",
-    "pg": "^8.8.0",
-    "react": "^18.2.0",
-    "react-bootstrap": "^2.5.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^8.0.2",
-    "react-router-dom": "^6.3.0",
-    "selenium-webdriver": "^4.5.0"
+    "pg": "^8.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
