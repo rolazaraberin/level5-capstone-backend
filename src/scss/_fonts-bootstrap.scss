@@ -1,9 +1,0 @@
-@use "sass:map";
-
-//BOOTSTRAP FONT VARIABLES
-$font-family-base: null !default;
-$font-family-monospace: null !default;
-$font-family-code: null !default;
-$font-family-sans-serif: null !default;
-
-$font-family-base: map.merge($custom-font-family, $font-family-base);

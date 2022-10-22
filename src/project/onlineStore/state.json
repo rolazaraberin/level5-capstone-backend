@@ -1,3 +1,0 @@
-{
-	"payload": "[{\"type\":\"cart/addItem\",\"payload\":{\"name\":\"charger\",\"price\":15}},{\"type\":\"cart/addItem\",\"payload\":{\"name\":\"stylus\",\"price\":35}},{\"type\":\"cart/addItem\",\"payload\":{\"name\":\"mouse\",\"price\":10}},{\"type\":\"cart/addItem\",\"payload\":{\"name\":\"case\",\"price\":30}}]"
-}
