@@ -9,7 +9,7 @@ const port = process.env.PORT || 8080;
 const baseUrl = "/";
 
 console.log("Starting server...");
-// app.use(cors());
+app.use(cors());
 // app.use(myCors);
 app.use(express.static("public"));
 app.use(express.json()); //REQUIRED TO ACCEPT REQUESTS WITH JSON BODY
