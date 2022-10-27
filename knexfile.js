@@ -32,6 +32,7 @@ const config = {
       directory: "./src/data/seeds",
     },
     useNullAsDefault: true,
+    pool: { min: 0, max: 1 },
   },
 };
 
