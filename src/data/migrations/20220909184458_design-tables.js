@@ -12,9 +12,10 @@ async function up(table) {
     })
     .createTable("cart", function (column) {
       // row.integer("id").primary();
-      column.integer("userID");
+      column.increments("id").primary();
       column.integer("itemID");
-      column.integer("quantity");
+      // column.integer("userID");
+      // column.integer("quantity");
     });
   // .createTable("mentor", function (row) {
   //   row.integer("id").primary();
