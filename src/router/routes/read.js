@@ -38,7 +38,7 @@ async function cartData(_request, response) {
     // const data = JSON.stringify({ items }, replacer, spacer);
     // const data = JSON.stringify({ items, cart }, replacer, spacer);
     // const message = "Use Postman to send POST, PUT, and DELETE requests to this API";
-    response.type("text");
+    // response.type("text");
     response.status(200).send(data);
     // response.status(200).send([message, data].join("\n"));
   } catch (error) {
