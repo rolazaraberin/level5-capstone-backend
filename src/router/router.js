@@ -1,31 +1,33 @@
 const express = require("express");
 const urlHome = require("./routes/home");
-const apiUpdate = require("./routes/update");
-const apiRead = require("./routes/read");
-const apiCreate = require("./routes/create");
-const apiDelete = require("./routes/delete");
-// const { urlQuery1, urlQuery2, urlQuery3 } = require("./routes/queries");
+const create = require("./routes/create");
+const read = require("./routes/read");
+const update = require("./routes/update");
+const del = require("./routes/delete");
 
 const URL = {
-  home: "/",
-  // test: "/test",
-  // query1: "/query1",
-  // query2: "/query2",
-  // query3: "/query3",
-};
-const API = {
-  url: "/api",
+  baseUrl: "/",
+  api: "/api",
+  cart: "/api/cart",
+  inventory: "/api/inventory",
 };
 
 const router = express.Router();
-router.get(URL.home, urlHome);
-// router.get(URL.test, urlHome);
-// router.get(URL.query1, urlQuery1);
-// router.get(URL.query2, urlQuery2);
-// router.get(URL.query3, urlQuery3);
-router.post(API.url, apiCreate);
-router.get(API.url, apiRead);
-router.put(API.url, apiUpdate);
-router.delete(API.url, apiDelete);
+router.get(URL.baseUrl, urlHome);
+
+router.get(URL.api, read.allData);
+router.post(URL.api, create.anyData);
+router.post(URL.api, update.idKey);
+router.post(URL.api, del.idKey);
+
+router.post(URL.cart, create.cartData);
+router.get(URL.cart, read.cartData);
+router.put(URL.cart, update.cartData);
+router.delete(URL.cart, del.cartData);
+
+router.post(URL.inventory, create.inventoryData);
+router.get(URL.inventory, read.inventoryData);
+router.put(URL.inventory, update.inventoryData);
+router.put(URL.inventory, del.inventoryData);
 
 module.exports = router;
