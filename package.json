@@ -7,10 +7,12 @@
   "scripts": {
     "test": "jest --watchAll",
     "start": "nodemon ./src/index.js",
-    "deploy": "git push heroku main",
     "server": "nodemon ./src/index.js",
+    "deploy": "git push heroku main",
     "tables": "knex migrate:latest --env remote",
+    "migration": "knex migrate:latest --env remote",
     "data": "knex seed:run --env remote",
+    "seed": "knex seed:run --env remote",
     "rollback": "knex migrate:rollback --env remote"
   },
   "keywords": [],

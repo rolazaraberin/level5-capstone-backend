@@ -11,29 +11,30 @@ async function up(table) {
       column.string("description");
     })
     .createTable("cart", function (column) {
+      //TODO: CREATE NEW CART TABLE PER USER
+
       // row.integer("id").primary();
-      column.increments("id").primary();
-      column.integer("itemID");
+      // column.increments("id").primary();
+      column.integer("itemID").primary();
+      column.integer("quantity");
+      // column.integer("itemID");
       // column.integer("userID");
-      // column.integer("quantity");
+    })
+    .createTable("inventory", function (column) {
+      //TODO: CREATE NEW CART TABLE PER USER
+
+      // row.integer("id").primary();
+      // column.increments("id").primary();
+      column.integer("itemID").primary();
+      column.integer("quantity");
+      // column.integer("itemID");
+      // column.integer("userID");
     });
-  // .createTable("mentor", function (row) {
-  //   row.integer("id").primary();
-  //   row.string("name");
-  // })
-  // .createTable("codexStudent", function (table) {
-  //   table.increments("id").primary();
-  //   table.string("name");
-  //   table.integer("level");
-  //   table.integer("mentor").references("id").inTable("mentor");
-  //   // table.integer("mentor");
-  //   // table.foreign("mentor").references("mentor.id");
-  //   // table.foreign("mentor").references("id").inTable("mentor");
-  //   // table.integer("mentor").references("mentor.id");
-  // });
 }
 
 async function down(table) {
-  return table.schema.dropTable("item").dropTable("cart");
-  // return table.schema.dropTable("codexStudent").dropTable("mentor");
+  return table.schema
+    .dropTable("item")
+    .dropTable("cart")
+    .dropTable("inventory");
 }

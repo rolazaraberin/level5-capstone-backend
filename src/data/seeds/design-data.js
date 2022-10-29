@@ -4,14 +4,11 @@ module.exports = { seed };
 async function seed(knex) {
   // Deletes ALL existing entries
   await knex("item").delete();
-  // await knex("codexStudent").delete();
-  // await knex("mentor").delete();
-  // await knex("codexStudent").whereNotNull("id").delete();
-  // await knex("mentor").whereNotNull("id").delete();
 
   // Inserts seed entries
   await knex("item").insert([
     {
+      // id: 1,
       name: "Laptop",
       price: 1000,
       image:
@@ -20,6 +17,7 @@ async function seed(knex) {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed felis eget velit aliquet.",
     },
     {
+      // id: 2,
       name: "Case",
       price: 30,
       image:
@@ -28,6 +26,7 @@ async function seed(knex) {
         "Eget felis eget nunc lobortis mattis aliquam faucibus purus. Facilisi etiam dignissim diam quis enim lobortis scelerisque.",
     },
     {
+      // id: 3,
       name: "Charger",
       price: 15,
       image:
@@ -36,6 +35,7 @@ async function seed(knex) {
         "Ornare suspendisse sed nisi lacus sed. Bibendum neque egestas congue quisque.",
     },
     {
+      // id: 4,
       name: "Stylus",
       price: 35,
       image:
@@ -44,6 +44,7 @@ async function seed(knex) {
         "Dui sapien eget mi proin sed libero. Tristique et egestas quis ipsum suspendisse ultrices.",
     },
     {
+      // id: 5,
       name: "Mouse",
       price: 10,
       image:
@@ -52,6 +53,7 @@ async function seed(knex) {
         "Varius morbi enim nunc faucibus a pellentesque sit amet porttitor. Diam sollicitudin tempor id eu nisl nunc mi ipsum faucibus.",
     },
     {
+      // id: 6,
       name: "Keyboard",
       price: 15,
       image:
@@ -59,27 +61,24 @@ async function seed(knex) {
       description:
         "Consectetur lorem donec massa sapien faucibus. Ut ornare lectus sit amet est placerat in.",
     },
-    // { id: 1, name: "laptop", price: 1000 },
-    // { id: 2, name: "case", price: 30 },
-    // { id: 3, name: "charger", price: 15 },
-    // { id: 4, name: "stylus", price: 35 },
-    // { id: 5, name: "mouse", price: 10 },
-    // { id: 6, name: "keyboard", price: 15 },
   ]);
-  // await knex("mentor").insert([
-  //   { id: 1, name: "Byron" },
-  //   { id: 2, name: "Lillian" },
-  //   { id: 3, name: "Chuks" },
-  //   { id: 4, name: "JR" },
-  //   { id: 5, name: "Josue" },
-  //   { id: 6, name: "Steve" },
-  // ]);
-  // await knex("codexStudent").insert([
-  //   { name: "Rolazar", level: 4, mentor: 1 },
-  //   { name: "Doe", level: 2, mentor: 2 },
-  //   { name: "John", level: 3, mentor: 3 },
-  //   { name: "Jane", level: 2, mentor: 4 },
-  //   { name: "Janet", level: 4 },
-  //   { name: "Jake", level: 2 },
-  // ]);
+
+  await knex("inventory").delete();
+
+  await knex("inventory").insert([
+    { itemID: 1, quantity: null },
+    { itemID: 2, quantity: null },
+    { itemID: 3, quantity: null },
+    { itemID: 4, quantity: null },
+    { itemID: 5, quantity: null },
+    { itemID: 6, quantity: null },
+  ]);
+
+  await knex("cart").delete();
+
+  await knex("cart").insert([
+    { itemID: 1, quantity: 1 },
+    { itemID: 3, quantity: 1 },
+    { itemID: 5, quantity: 3 },
+  ]);
 }
