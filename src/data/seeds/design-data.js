@@ -66,19 +66,35 @@ async function seed(knex) {
   await knex("inventory").delete();
 
   await knex("inventory").insert([
-    { itemID: 1, quantity: null },
-    { itemID: 2, quantity: null },
-    { itemID: 3, quantity: null },
-    { itemID: 4, quantity: null },
-    { itemID: 5, quantity: null },
-    { itemID: 6, quantity: null },
+    {
+      itemsTable: "inventoryItems",
+      totalQuantity: 30,
+      totalPrice: 5525,
+    },
+  ]);
+
+  await knex("inventoryItems").delete();
+
+  await knex("inventoryItems").insert([
+    { itemID: 1, quantity: 5, subtotal: 5000 },
+    { itemID: 2, quantity: 5, subtotal: 150 },
+    { itemID: 3, quantity: 5, subtotal: 75 },
+    { itemID: 4, quantity: 5, subtotal: 175 },
+    { itemID: 5, quantity: 5, subtotal: 50 },
+    { itemID: 6, quantity: 5, subtotal: 75 },
   ]);
 
   await knex("cart").delete();
 
   await knex("cart").insert([
-    { itemID: 1, quantity: 1 },
-    { itemID: 3, quantity: 1 },
-    { itemID: 5, quantity: 3 },
+    { itemsTable: "cartItems", totalQuantity: 5, totalPrice: 1045 },
+  ]);
+
+  await knex("cartItems").delete();
+
+  await knex("cartItems").insert([
+    { itemID: 1, quantity: 1, subtotal: 1000 },
+    { itemID: 3, quantity: 1, subtotal: 15 },
+    { itemID: 5, quantity: 3, subtotal: 30 },
   ]);
 }

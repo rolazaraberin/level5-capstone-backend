@@ -5,6 +5,8 @@ const read = require("./routes/read");
 const update = require("./routes/update");
 const del = require("./routes/delete");
 
+//ROUTING - http://expressjs.com/en/guide/routing.html
+
 const URL = {
   baseUrl: "/",
   api: "/api",
