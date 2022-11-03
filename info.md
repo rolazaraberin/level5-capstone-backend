@@ -1,3 +1,8 @@
+## Deploying
+
+1. Commit git changes
+2. `npm run deploy`
+
 ## Environment Variables
 
 1. Instead of copying .env to git, set the variables in Heroku.

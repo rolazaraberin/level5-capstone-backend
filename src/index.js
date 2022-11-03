@@ -5,7 +5,7 @@ const router = require("./router/router");
 const app = express();
 const hostname = process.env.HOST || "localhost";
 // const port = Number(process.env.PORT) || 8080;
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8000;
 const baseUrl = "/";
 
 console.log("Starting server...");

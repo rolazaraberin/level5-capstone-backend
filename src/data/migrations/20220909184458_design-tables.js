@@ -28,7 +28,6 @@ async function up(table) {
       // column.increments("id").primary();
       column.integer("itemID").primary();
       column.integer("quantity");
-      column.integer("price");
       column.integer("subtotal");
       // column.integer("itemID");
       // column.integer("userID");

@@ -18,9 +18,9 @@ const router = express.Router();
 router.get(URL.baseUrl, urlHome);
 
 router.get(URL.api, read.allData);
-router.post(URL.api, create.anyData);
-router.post(URL.api, update.idKey);
-router.post(URL.api, del.idKey);
+router.post(URL.api, create.manualData);
+router.put(URL.api, update.idKey);
+router.delete(URL.api, del.idKey);
 
 router.post(URL.cart, create.cartData);
 router.get(URL.cart, read.cartData);

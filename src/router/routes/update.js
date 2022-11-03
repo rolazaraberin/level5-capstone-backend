@@ -1,13 +1,14 @@
 const config = require("../../../knexfile");
 const _knex = require("knex");
-const { omit } = require("lodash");
+const { omit, filter } = require("lodash");
+const { getValidValues } = require("../../scripts/utilityFunctionsServer");
 
 // const knex = _knex(config.development);
 const knex = _knex(config.remote);
-const cartData = updateData("cart", "itemID");
-const inventoryData = updateData("inventory", "itemID");
+const cartData = updateData("cart");
+const inventoryData = updateData("inventory");
 
-module.exports = { idKey, cartData, inventoryData };
+module.exports = { idKey, cartData, inventoryData, updateData };
 
 async function idKey(request, response) {
   try {
@@ -20,15 +21,26 @@ async function idKey(request, response) {
   }
 }
 
-function updateData(tableString, keyString) {
+function updateData(route) {
+  let mainTable;
+  if (route === "cart") mainTable = "cart";
+  if (route === "inventory") mainTable = "inventory";
+
   return async function (request, response) {
     try {
-      // const table = "inventory";
-      // const { itemID, ...data } = request.body;
-      const id = request.body[keyString];
-      const data = omit(request.body, keyString);
-      await knex.table(tableString).update(data).where(keyString, "=", id);
-      const result = await knex.table(tableString).select();
+      const data = getValidValues(request.body);
+      await knex.table(mainTable).update(data[mainTable]);
+
+      const itemsTable = data[mainTable].itemsTable;
+      const itemID = data["item"].itemID;
+      await knex
+        .table(itemsTable)
+        .update(data["item"])
+        .where("itemID", "=", itemID);
+
+      let result = {};
+      result[mainTable] = await knex.table(mainTable).select();
+      result[itemsTable] = await knex.table(itemsTable).select();
       response.status(200).send(result);
     } catch (error) {
       response.status(400).send(error.message);
@@ -36,6 +48,9 @@ function updateData(tableString, keyString) {
   };
 }
 
+function toValidValues(value, property, object) {
+  debugger;
+}
 // async function cartData(request, response) {
 //   try {
 //     const table = "cart";
