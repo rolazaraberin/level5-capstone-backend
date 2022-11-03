@@ -3,12 +3,47 @@ const _knex = require("knex");
 
 const cartData = readData("cart");
 const inventoryData = readData("inventory");
-module.exports = { allData, cartData, inventoryData };
+module.exports = { manualData, cartData, inventoryData };
 
 // const knex = _knex(config.development);
 const knex = _knex(config.remote);
 const replacer = undefined;
 const spacer = " ";
+
+function readData(route) {
+  let mainTable;
+  if (route === "cart") mainTable = "cart";
+  if (route === "inventory") mainTable = "inventory";
+
+  return async function (_request, response) {
+    try {
+      // result[mainTable] = await knex.select().from(mainTable);
+      let result;
+      const data = await knex.table(mainTable).select();
+      result = { ...data[0] };
+      const itemsTable = result.itemsTable;
+      const items = await knex
+        .select()
+        .from(itemsTable)
+        .leftJoin("item", `${itemsTable}.itemID`, "item.id");
+      result = { ...result, items };
+      response.status(200).send(result);
+    } catch (error) {
+      response.status(400).send(error);
+    }
+  };
+}
+
+async function manualData(request, response) {
+  try {
+    const { table } = request.body;
+    const data = await knex.table(table).select();
+    // response.type("text");
+    response.status(200).send(data);
+  } catch (error) {
+    response.status(400).send(error.message);
+  }
+}
 
 async function allData(_request, response) {
   try {
@@ -72,22 +107,3 @@ async function allData(_request, response) {
 //     response.status(400).send(error);
 //   }
 // }
-
-function readData(tableString) {
-  return async function (_request, response) {
-    try {
-      const table = tableString;
-      const tableData = await knex.select().from(table);
-      // const itemsTable = `${table}ItemsTable`;
-      const itemsTable = tableData[0].itemsTable;
-      const items = await knex
-        .select()
-        .from(itemsTable)
-        .leftJoin("item", `${itemsTable}.itemID`, "item.id");
-      const data = { ...tableData[0], items };
-      response.status(200).send(data);
-    } catch (error) {
-      response.status(400).send(error);
-    }
-  };
-}
