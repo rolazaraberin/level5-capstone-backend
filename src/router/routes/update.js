@@ -1,7 +1,7 @@
 const config = require("../../../knexfile");
 const _knex = require("knex");
 const { omit, filter } = require("lodash");
-const { getValidValues } = require("../../scripts/utilityFunctionsServer");
+const { getValidValues } = require("../../utilityFunctionsServer");
 
 // const knex = _knex(config.development);
 const knex = _knex(config.remote);

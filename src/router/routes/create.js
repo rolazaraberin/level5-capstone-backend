@@ -1,7 +1,7 @@
 const config = require("../../../knexfile");
 const _knex = require("knex");
 const { updateData } = require("./update");
-const { getValidValues } = require("../../scripts/utilityFunctionsServer");
+const { getValidValues } = require("../../utilityFunctionsServer");
 
 const cartData = createData("cart");
 const inventoryData = createData("inventory");
