@@ -20,7 +20,7 @@ router.get(URL.baseUrl, urlHome);
 router.get(URL.api, read.manualData);
 router.post(URL.api, create.manualData);
 router.put(URL.api, update.idKey);
-router.delete(URL.api, del.idKey);
+router.delete(URL.api, del.manualData);
 
 router.post(URL.cart, create.cartData);
 router.get(URL.cart, read.cartData);

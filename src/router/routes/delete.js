@@ -7,12 +7,14 @@ const knex = _knex(config.remote);
 
 const cartData = deleteData("cart");
 const inventoryData = deleteData("inventory");
-module.exports = { idKey, cartData, inventoryData };
+module.exports = { manualData, cartData, inventoryData };
 
-async function idKey(request, response) {
+async function manualData(request, response) {
   try {
-    const { table, id } = request.body;
-    await knex.table(table).where("id", "=", id).delete();
+    const { table, ...data } = request.body;
+    const column = Object.getOwnPropertyNames(data)[0];
+    const value = data[column];
+    await knex.table(table).where(column, "=", value).delete();
     const result = await knex.table(table).select();
     response.status(200).send(result);
   } catch (error) {

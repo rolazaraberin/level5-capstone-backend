@@ -24,6 +24,8 @@ function createData(route) {
     try {
       const data = getValidValues(request.body);
       const itemsTable = request.body[mainTable].itemsTable;
+      if (!itemsTable || itemsTable === "")
+        throw new Error(`Invalid itemsTable "${itemsTable}"`);
 
       try {
         await knex.table(mainTable).insert(data[mainTable]);
