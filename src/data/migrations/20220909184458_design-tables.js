@@ -4,7 +4,7 @@ async function up(table) {
   return table.schema
     .createTable("item", function (column) {
       // row.integer("id").primary();
-      column.increments("id").primary();
+      column.increments("id").primary().notNullable();
       column.string("name");
       column.float("price");
       column.string("image");
@@ -15,7 +15,7 @@ async function up(table) {
 
       // row.integer("id").primary();
       // column.increments("id").primary();
-      column.string("itemsTable").primary();
+      column.string("itemsTable").primary().notNullable();
       column.integer("totalQuantity");
       column.integer("totalPrice");
       // column.integer("itemID");
@@ -26,7 +26,7 @@ async function up(table) {
 
       // row.integer("id").primary();
       // column.increments("id").primary();
-      column.integer("itemID").primary();
+      column.integer("itemID").primary().notNullable();
       column.integer("quantity");
       column.integer("subtotal");
       // column.integer("itemID");
@@ -37,7 +37,7 @@ async function up(table) {
 
       // row.integer("id").primary();
       // column.increments("id").primary();
-      column.string("itemsTable").primary();
+      column.string("itemsTable").primary().notNullable();
       column.integer("totalQuantity");
       column.integer("totalPrice");
       // column.integer("itemID");
@@ -48,7 +48,7 @@ async function up(table) {
 
       // row.integer("id").primary();
       // column.increments("id").primary();
-      column.integer("itemID").primary();
+      column.integer("itemID").primary().notNullable();
       column.integer("quantity");
       column.integer("subtotal");
       // column.integer("itemID");
