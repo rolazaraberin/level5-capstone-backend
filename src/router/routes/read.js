@@ -1,9 +1,10 @@
 const config = require("../../../knexfile");
 const _knex = require("knex");
+const { isEmpty } = require("lodash");
 
 const cartData = readData("cart");
 const inventoryData = readData("inventory");
-module.exports = { manualData, cartData, inventoryData };
+module.exports = { manualData, cartData, inventoryData, allData };
 
 // const knex = _knex(config.development);
 const knex = _knex(config.remote);
@@ -45,15 +46,27 @@ async function manualData(request, response) {
   }
 }
 
-async function allData(_request, response) {
+async function allData(request, response) {
+  if (!isEmpty(request.body)) {
+    manualData(request, response);
+    return;
+  }
+
   try {
     // const data = await knex.select().from("item");
     const item = await knex.select().from("item");
     const inventory = await knex.select().from("inventory");
+    const inventoryItems = await knex.select().from("inventoryItems");
     const cart = await knex.select().from("cart");
+    const cartItems = await knex.select().from("cartItems");
     // const data = JSON.stringify({ students, mentors }, replacer, spacer);
     // const data = JSON.stringify({ items }, replacer, spacer);
-    const data = JSON.stringify({ item, inventory, cart }, replacer, spacer);
+    const data = JSON.stringify(
+      { item, inventory, inventoryItems, cart, cartItems },
+      replacer,
+      spacer
+    );
+    // const data = { item, inventory, inventoryItems, cart, cartItems };
     // const message = "Use Postman to send POST, PUT, and DELETE requests to this API";
     response.type("text");
     response.status(200).send(data);
