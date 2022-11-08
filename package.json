@@ -5,9 +5,9 @@
   "main": "src/index.js",
   "mainHTML": "src/index.html",
   "scripts": {
-    "test": "jest --watchAll",
     "start": "nodemon ./src/index.js",
     "server": "nodemon ./src/index.js",
+    "upload": "git push github main",
     "deploy": "git push heroku main",
     "tables": "knex migrate:latest --env remote",
     "posttables": "knex seed:run --env remote",
@@ -15,12 +15,15 @@
     "postmigration": "knex seed:run --env remote",
     "data": "knex seed:run --env remote",
     "seed": "knex seed:run --env remote",
-    "rollback": "knex migrate:rollback --env remote"
+    "rollback": "knex migrate:rollback --env remote",
+    "test": "jest",
+    "watch": "jest --watchAll"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.1.2",
     "better-sqlite3": "^7.6.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
