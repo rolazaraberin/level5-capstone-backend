@@ -3,8 +3,7 @@ const _knex = require("knex");
 const { omit, filter } = require("lodash");
 const { getValidValues } = require("../../utilityFunctionsServer");
 
-// const knex = _knex(config.development);
-const knex = _knex(config.remote);
+const knex = getKnex(config, _knex);
 const cartData = updateData("cart");
 const inventoryData = updateData("inventory");
 
@@ -51,26 +50,12 @@ function updateData(route) {
 function toValidValues(value, property, object) {
   debugger;
 }
-// async function cartData(request, response) {
-//   try {
-//     const table = "cart";
-//     const { itemID, ...data } = request.body;
-//     await knex.table(table).update(data).where("itemID", "=", itemID);
-//     const result = await knex.table(table).select();
-//     response.status(200).send(result);
-//   } catch (error) {
-//     response.status(400).send(error.message);
-//   }
-// }
 
-// async function inventoryData(request, response) {
-//   try {
-//     const table = "inventory";
-//     const { itemID, ...data } = request.body;
-//     await knex.table(table).update(data).where("itemID", "=", itemID);
-//     const result = await knex.table(table).select();
-//     response.status(200).send(result);
-//   } catch (error) {
-//     response.status(400).send(error.message);
-//   }
-// }
+function getKnex(config, knex) {
+  switch (config.mode) {
+    case "development":
+      return knex(config.development);
+    case "production":
+      return knex(config.remote);
+  }
+}

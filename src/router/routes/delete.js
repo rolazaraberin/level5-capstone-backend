@@ -2,8 +2,7 @@ const config = require("../../../knexfile");
 const _knex = require("knex");
 const { getValidValues } = require("../../utilityFunctionsServer");
 
-// const knex = _knex(config.development);
-const knex = _knex(config.remote);
+const knex = getKnex(config, _knex);
 
 const cartData = deleteData("cart");
 const inventoryData = deleteData("inventory");
@@ -45,4 +44,13 @@ function deleteData(route) {
       response.status(400).send(error.message);
     }
   };
+}
+
+function getKnex(config, knex) {
+  switch (config.mode) {
+    case "development":
+      return knex(config.development);
+    case "production":
+      return knex(config.remote);
+  }
 }

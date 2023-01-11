@@ -8,8 +8,7 @@ const inventoryData = createData("inventory");
 
 module.exports = { manualData, cartData, inventoryData };
 
-// const knex = _knex(config.development);
-const knex = _knex(config.remote);
+const knex = getKnex(config, _knex);
 
 function createData(route) {
   let mainTable;
@@ -57,5 +56,14 @@ async function manualData(request, response) {
     response.status(200).send(result);
   } catch (error) {
     response.status(400).send(error.message);
+  }
+}
+
+function getKnex(config, knex) {
+  switch (config.mode) {
+    case "development":
+      return knex(config.development);
+    case "production":
+      return knex(config.remote);
   }
 }

@@ -12,7 +12,7 @@ async function seed(knex) {
       name: "Laptop",
       price: 1000,
       image:
-        "https://www.weboo.co/wp-content/uploads/2021/07/HUAWEI-MateBook-X-Pro-13.9in-i7-16GB-1TB-Laptop-Green-1599.99-at-Argos-Weboo.jpeg",
+        "https://www.affordableproductreview.com/wp-content/uploads/2013/07/lenovoG580.jpg",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed felis eget velit aliquet.",
     },
