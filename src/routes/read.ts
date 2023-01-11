@@ -1,4 +1,4 @@
-import config, { KnexConfig } from "../../../knexfile";
+import config, { KnexConfig } from "../../knexfile";
 import Knex from "knex";
 import { isEmpty } from "lodash";
 import { Request, Response } from "express";

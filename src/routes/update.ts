@@ -1,7 +1,7 @@
-import config, { KnexConfig } from "../../../knexfile";
+import config, { KnexConfig } from "../../knexfile";
 import Knex from "knex";
 import { omit, filter } from "lodash";
-import { getValidValues } from "../../utilityFunctionsServer";
+import { getValidValues } from "../utilityFunctionsServer";
 import { Request, Response } from "express";
 
 const knex = getKnex(config, Knex);

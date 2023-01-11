@@ -1,9 +1,9 @@
 import express from "express";
-import urlHome from "./routes/home";
-import create from "./routes/create";
-import read from "./routes/read";
-import update from "./routes/update";
-import del from "./routes/delete";
+import urlHome from "./home";
+import create from "./create";
+import read from "./read";
+import update from "./update";
+import del from "./delete";
 
 //ROUTING - http://expressjs.com/en/guide/routing.html
 
@@ -32,4 +32,4 @@ router.get(URL.inventory, read.inventoryData);
 router.put(URL.inventory, update.inventoryData);
 router.put(URL.inventory, del.inventoryData);
 
-module.exports = router;
+export default router;

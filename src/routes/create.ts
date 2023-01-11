@@ -1,7 +1,7 @@
-import config, { KnexConfig } from "../../../knexfile";
+import config, { KnexConfig } from "../../knexfile";
 import Knex from "knex";
 // import { updateData } from "./update";
-import { getValidValues } from "../../utilityFunctionsServer";
+import { getValidValues } from "../utilityFunctionsServer";
 import { Request, Response } from "express";
 
 const cartData = createData("cart");

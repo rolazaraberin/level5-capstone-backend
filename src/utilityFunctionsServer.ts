@@ -18,7 +18,7 @@ function getValidValues(object: any, validTablesAndProperties = validValues) {
 
   if (!(validTablesAndProperties instanceof Array))
     validTablesAndProperties = [validTablesAndProperties];
-  let validValues = {};
+  let validValues: any = {};
 
   for (let validObject of validTablesAndProperties) {
     const table = validObject.table;
