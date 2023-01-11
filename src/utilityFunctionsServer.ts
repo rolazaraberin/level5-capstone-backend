@@ -1,4 +1,4 @@
-const { filter, isEmpty, reduce } = require("lodash");
+import { filter, isEmpty, reduce } from "lodash";
 
 const validValues = [
   { table: "cart", properties: ["itemsTable", "totalQuantity", "totalPrice"] },
@@ -10,9 +10,9 @@ const validValues = [
   },
 ];
 
-module.exports = { getValidValues, toUsedProperties };
+export { getValidValues, toUsedProperties };
 
-function getValidValues(object, validTablesAndProperties = validValues) {
+function getValidValues(object: any, validTablesAndProperties = validValues) {
   //FORMAT OF validTablesAndProperties
   //[ {table: tableName, properties: ["property1","property2"]}, {...} ]
 
@@ -51,8 +51,13 @@ function getValidValues(object, validTablesAndProperties = validValues) {
   // }
 }
 
-function toUsedProperties(propertiesArray) {
-  return function (usedProperties = {}, value, property, _object) {
+function toUsedProperties(propertiesArray: any) {
+  return function (
+    usedProperties = {},
+    value: any,
+    property: any,
+    _object: any
+  ) {
     if (value === undefined || value < 0) return usedProperties;
     if (propertiesArray.includes(property)) usedProperties[property] = value;
     return usedProperties;

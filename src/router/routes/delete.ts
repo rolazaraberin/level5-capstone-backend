@@ -1,14 +1,15 @@
-const config = require("../../../knexfile");
-const _knex = require("knex");
-const { getValidValues } = require("../../utilityFunctionsServer");
+import config, { KnexConfig } from "../../../knexfile";
+import Knex from "knex";
+import { getValidValues } from "../../utilityFunctionsServer";
+import { Request, Response } from "express";
 
-const knex = getKnex(config, _knex);
+const knex = getKnex(config, Knex);
 
 const cartData = deleteData("cart");
 const inventoryData = deleteData("inventory");
-module.exports = { manualData, cartData, inventoryData };
+export default { manualData, cartData, inventoryData };
 
-async function manualData(request, response) {
+async function manualData(request: Request, response: Response) {
   try {
     const { table, ...data } = request.body;
     const column = Object.getOwnPropertyNames(data)[0];
@@ -21,12 +22,12 @@ async function manualData(request, response) {
   }
 }
 
-function deleteData(route) {
-  let mainTable;
+function deleteData(route: string) {
+  let mainTable: string;
   if (route === "cart") mainTable = "cart";
   if (route === "inventory") mainTable = "inventory";
 
-  return async function (request, response) {
+  return async function (request: Request, response: Response) {
     try {
       // const table = "inventory";
       // const { itemID, ...data } = request.body;
@@ -46,7 +47,7 @@ function deleteData(route) {
   };
 }
 
-function getKnex(config, knex) {
+function getKnex(config: KnexConfig, knex: any) {
   switch (config.mode) {
     case "development":
       return knex(config.development);

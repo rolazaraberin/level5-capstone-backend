@@ -1,9 +1,9 @@
-const express = require("express");
-const urlHome = require("./routes/home");
-const create = require("./routes/create");
-const read = require("./routes/read");
-const update = require("./routes/update");
-const del = require("./routes/delete");
+import express from "express";
+import urlHome from "./routes/home";
+import create from "./routes/create";
+import read from "./routes/read";
+import update from "./routes/update";
+import del from "./routes/delete";
 
 //ROUTING - http://expressjs.com/en/guide/routing.html
 

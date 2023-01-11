@@ -1,7 +1,7 @@
-module.exports = { seed };
+// export default { seed };
 
 // export async function seed(knex) {
-async function seed(knex) {
+export async function seed(knex: any) {
   // Deletes ALL existing entries
   await knex("item").delete();
 

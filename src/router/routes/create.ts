@@ -1,25 +1,22 @@
-const config = require("../../../knexfile");
-const _knex = require("knex");
-const { updateData } = require("./update");
-const { getValidValues } = require("../../utilityFunctionsServer");
+import config, { KnexConfig } from "../../../knexfile";
+import Knex from "knex";
+// import { updateData } from "./update";
+import { getValidValues } from "../../utilityFunctionsServer";
+import { Request, Response } from "express";
 
 const cartData = createData("cart");
 const inventoryData = createData("inventory");
 
-module.exports = { manualData, cartData, inventoryData };
+export default { manualData, cartData, inventoryData };
 
-const knex = getKnex(config, _knex);
+const knex = getKnex(config, Knex);
 
-function createData(route) {
-  let mainTable;
+function createData(route: string) {
+  let mainTable: string;
   if (route === "cart") mainTable = "cart";
   if (route === "inventory") mainTable = "inventory";
 
-  return async function (request, response) {
-    // const data = request.body;
-    // const data = getValidValues(request.body, tableString);
-    // const tableData = getValidValues(request.body[mainTable], validValues);
-    // const data = getValidValues(request.body, validValues);
+  return async function (request: Request, response: Response) {
     try {
       const data = getValidValues(request.body);
       const itemsTable = request.body[mainTable].itemsTable;
@@ -48,18 +45,18 @@ function createData(route) {
   };
 }
 
-async function manualData(request, response) {
+async function manualData(request: Request, response: Response) {
   try {
     const { table, ...data } = request.body;
     await knex.insert(data).table(table);
-    result = await knex.table(table).select();
+    const result = await knex.table(table).select();
     response.status(200).send(result);
   } catch (error) {
     response.status(400).send(error.message);
   }
 }
 
-function getKnex(config, knex) {
+function getKnex(config: KnexConfig, knex: any) {
   switch (config.mode) {
     case "development":
       return knex(config.development);

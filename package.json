@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "mainHTML": "src/index.html",
   "scripts": {
-    "start": "nodemon ./src/index.js",
-    "server": "nodemon ./src/index.js",
+    "start": "nodemon ./src/index.ts",
+    "server": "nodemon ./src/index.ts",
     "upload": "git push github main",
     "deploy": "git push heroku main",
     "tables": "knex migrate:latest --env development",

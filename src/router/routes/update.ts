@@ -1,15 +1,16 @@
-const config = require("../../../knexfile");
-const _knex = require("knex");
-const { omit, filter } = require("lodash");
-const { getValidValues } = require("../../utilityFunctionsServer");
+import config, { KnexConfig } from "../../../knexfile";
+import Knex from "knex";
+import { omit, filter } from "lodash";
+import { getValidValues } from "../../utilityFunctionsServer";
+import { Request, Response } from "express";
 
-const knex = getKnex(config, _knex);
+const knex = getKnex(config, Knex);
 const cartData = updateData("cart");
 const inventoryData = updateData("inventory");
 
-module.exports = { idKey, cartData, inventoryData, updateData };
+export default { idKey, cartData, inventoryData, updateData };
 
-async function idKey(request, response) {
+async function idKey(request: Request, response: Response) {
   try {
     const { table, id, ...data } = request.body;
     await knex.table(table).update(data).where("id", "=", id);
@@ -20,12 +21,12 @@ async function idKey(request, response) {
   }
 }
 
-function updateData(route) {
-  let mainTable;
+function updateData(route: string) {
+  let mainTable: string;
   if (route === "cart") mainTable = "cart";
   if (route === "inventory") mainTable = "inventory";
 
-  return async function (request, response) {
+  return async function (request: Request, response: Response) {
     try {
       const data = getValidValues(request.body);
       await knex.table(mainTable).update(data[mainTable]);
@@ -47,11 +48,11 @@ function updateData(route) {
   };
 }
 
-function toValidValues(value, property, object) {
-  debugger;
-}
+// function toValidValues(value, property, object) {
+//   debugger;
+// }
 
-function getKnex(config, knex) {
+function getKnex(config: KnexConfig, knex: any) {
   switch (config.mode) {
     case "development":
       return knex(config.development);

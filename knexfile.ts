@@ -1,7 +1,7 @@
 // const { Knex } = require("knex");
 // const path = require("path");
 // import dotenv from "dotenv";
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
 
 const config = {
@@ -53,4 +53,9 @@ const config = {
   },
 };
 
-module.exports = config;
+export interface KnexConfig {
+  mode: string;
+  development: any;
+  remote: any;
+}
+export default config;

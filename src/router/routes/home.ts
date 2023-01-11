@@ -1,4 +1,4 @@
-module.exports = urlHome;
+export default urlHome;
 
 function urlHome(_request, response) {
   response.sendFile("index.html", { root: "public" });

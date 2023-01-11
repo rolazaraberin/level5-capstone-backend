@@ -1,8 +1,8 @@
-module.exports = { up, down };
+// export default { up, down };
 
-async function up(table) {
+export async function up(table: any) {
   return table.schema
-    .createTable("item", function (column) {
+    .createTable("item", function (column: any) {
       // row.integer("id").primary();
       column.increments("id").primary().notNullable();
       column.string("name");
@@ -10,7 +10,7 @@ async function up(table) {
       column.string("image");
       column.string("description");
     })
-    .createTable("cart", function (column) {
+    .createTable("cart", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
       // row.integer("id").primary();
@@ -21,7 +21,7 @@ async function up(table) {
       // column.integer("itemID");
       // column.integer("userID");
     })
-    .createTable("cartItems", function (column) {
+    .createTable("cartItems", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
       // row.integer("id").primary();
@@ -32,7 +32,7 @@ async function up(table) {
       // column.integer("itemID");
       // column.integer("userID");
     })
-    .createTable("inventory", function (column) {
+    .createTable("inventory", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
       // row.integer("id").primary();
@@ -43,7 +43,7 @@ async function up(table) {
       // column.integer("itemID");
       // column.integer("userID");
     })
-    .createTable("inventoryItems", function (column) {
+    .createTable("inventoryItems", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
       // row.integer("id").primary();
@@ -56,7 +56,7 @@ async function up(table) {
     });
 }
 
-async function down(table) {
+export async function down(table: any) {
   return table.schema
     .dropTable("item")
     .dropTable("cart")
