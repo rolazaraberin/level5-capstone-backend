@@ -15,10 +15,26 @@ const config = {
       multipleStatements: true,
     },
     migrations: {
-      directory: "./src/data/migrations",
+      directory: "./src/models/migrations",
     },
     seeds: {
-      directory: "./src/data/seeds",
+      directory: "./src/models/seeds",
+    },
+    useNullAsDefault: true,
+  },
+  mysql: {
+    client: "mysql",
+    connection: {
+      user: process.env.devUser,
+      password: process.env.devPassword,
+      database: process.env.devDatabase,
+      multipleStatements: true,
+    },
+    migrations: {
+      directory: "./src/models/migrations",
+    },
+    seeds: {
+      directory: "./src/models/seeds",
     },
     useNullAsDefault: true,
   },
