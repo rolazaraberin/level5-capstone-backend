@@ -3,7 +3,6 @@
 export async function up(table: any) {
   return table.schema
     .createTable("item", function (column: any) {
-      // row.integer("id").primary();
       column.increments("id").primary().notNullable();
       column.string("name");
       column.float("price");
@@ -13,46 +12,42 @@ export async function up(table: any) {
     .createTable("cart", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
-      // row.integer("id").primary();
-      // column.increments("id").primary();
       column.string("itemsTable").primary().notNullable();
       column.integer("totalQuantity");
       column.integer("totalPrice");
-      // column.integer("itemID");
-      // column.integer("userID");
     })
     .createTable("cartItems", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
-      // row.integer("id").primary();
-      // column.increments("id").primary();
       column.integer("itemID").primary().notNullable();
       column.integer("quantity");
       column.integer("subtotal");
-      // column.integer("itemID");
-      // column.integer("userID");
     })
     .createTable("inventory", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
-      // row.integer("id").primary();
-      // column.increments("id").primary();
       column.string("itemsTable").primary().notNullable();
       column.integer("totalQuantity");
       column.integer("totalPrice");
-      // column.integer("itemID");
-      // column.integer("userID");
     })
     .createTable("inventoryItems", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
-      // row.integer("id").primary();
-      // column.increments("id").primary();
       column.integer("itemID").primary().notNullable();
       column.integer("quantity");
       column.integer("subtotal");
-      // column.integer("itemID");
-      // column.integer("userID");
+    })
+    .createTable("user", function (column: any) {
+      column.increments("id").primary().notNullable();
+      column.string("name");
+      column.string("email");
+    })
+    .createTable("login", function (column: any) {
+      column.string("emailHash").primary().notNullable();
+      column.string("passwordHash");
+      column.string("userID");
+      column.foreign("userID").references("user");
+      // column.foreign("userid").references("user").deferrable("deferred");
     });
 }
 
@@ -62,5 +57,7 @@ export async function down(table: any) {
     .dropTable("cart")
     .dropTable("cartItems")
     .dropTable("inventory")
-    .dropTable("inventoryItems");
+    .dropTable("inventoryItems")
+    .dropTable("user")
+    .dropTable("login");
 }

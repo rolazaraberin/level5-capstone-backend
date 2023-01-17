@@ -97,4 +97,38 @@ export async function seed(knex: any) {
     { itemID: 3, quantity: 1, subtotal: 15 },
     { itemID: 5, quantity: 3, subtotal: 30 },
   ]);
+
+  await knex("user").delete();
+
+  await knex("user").insert([
+    {
+      id: 1,
+      name: "Rolazar",
+      email: "rolazaraberin@gmail.com",
+    },
+    {
+      id: 2,
+      name: "correct",
+      email: "correct@email.com",
+    },
+  ]);
+
+  await knex("login").delete();
+
+  await knex("login").insert([
+    {
+      emailHash:
+        "1e9b4ffec7e769ede61e5ce942193ab13db7e9e8d170bb89b6411cfc7dec5e18",
+      passwordHash:
+        "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+      userID: 1,
+    },
+    {
+      emailHash:
+        "425bee187ab12fdfe19ea39148510c2a7bf5fce9957f296b90a3dc478e280b78",
+      passwordHash:
+        "e231b8ff6659dcbbec5aaa6a252d132de5a8dfb8e40167c45e4eb0ffb71a7065",
+      userID: 2,
+    },
+  ]);
 }
