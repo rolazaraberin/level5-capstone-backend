@@ -2,10 +2,12 @@ import config, { KnexConfig } from "../../knexfile";
 import Knex from "knex";
 import { isEmpty } from "lodash";
 import { Request, Response } from "express";
+import { hash } from "../utils/nodeUtils";
+import db from "../models/database";
 
 const cartData = readData("cart");
 const inventoryData = readData("inventory");
-export default { manualData, cartData, inventoryData, allData };
+export default { manualData, cartData, inventoryData, allData, loginData };
 
 const knex = getKnex(config, Knex);
 const replacer = undefined;
@@ -83,4 +85,42 @@ function getKnex(config: KnexConfig, knex: any) {
     case "production":
       return knex(config.remote);
   }
+}
+
+async function loginData(request: Request, response: Response) {
+  // const { email, password } = request.body;
+  debugger;
+  const userID = await authenticate(request.body);
+  if (!userID)
+    return response.status(401).send("ERROR: Incorrect email or password");
+  const account = await getUserInfo(userID);
+  if (!account)
+    return response.status(401).send("ERROR: Cannot retrieve account");
+  response.status(200).send(account);
+}
+
+async function authenticate(requestBody: any) {
+  // try {
+  // const { emailHash, passwordHash } = requestBody;
+  const { email, password } = requestBody;
+  const emailHash = hash(email);
+  const passwordHash = hash(password);
+  const table = "login";
+  const columns = ["emailHash", "passwordHash"];
+  const sql = `SELECT * FROM ${table} WHERE ${columns[0]} = '${emailHash}' AND ${columns[1]} = '${passwordHash}'`;
+  const data = await db.sql(sql);
+  const userID = isEmpty(data) ? null : data[0].userID;
+  return userID;
+  // } catch (mismatchingEmailAndPassword) {
+  // return null;
+  // }
+}
+
+async function getUserInfo(userID: number) {
+  const table = "user";
+  const columns = ["id"];
+  const sql = `SELECT * FROM ${table} WHERE ${columns[0]} = '${userID}'`;
+  const data = await db.sql(sql);
+  const account = data[0];
+  return account;
 }
