@@ -4,9 +4,9 @@ import create from "./create";
 import read from "./read";
 import update from "./update";
 import del from "./delete";
-import logout from "./logout";
-import signup from "./signup";
-import login from "./login";
+import logout from "../controllers/logout";
+import signup from "../controllers/signup";
+import login from "../controllers/login";
 
 //ROUTING - http://expressjs.com/en/guide/routing.html
 
