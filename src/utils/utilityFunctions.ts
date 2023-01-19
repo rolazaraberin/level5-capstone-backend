@@ -11,6 +11,7 @@ export {
   find,
   filterSort,
   floorOf,
+  generateKey,
   getFormEntries,
   getMultiArrayValue,
   getUniqueValues,
@@ -35,6 +36,7 @@ export {
   outProperty,
   outValue,
   pressEnter,
+  quoteValues,
   reduce,
   reduceArray,
   reduceObject,
@@ -139,6 +141,12 @@ function floorOf(number: number, decimalPlaces: number) {
   const unshifted = truncated / (decimalPlaces * 10);
   return unshifted;
 }
+
+let numberOfKeysGenerated = 0;
+function generateKey() {
+  return new Date().getTime() + "-" + numberOfKeysGenerated++;
+}
+
 function getFormEntries(formElement: HTMLFormElement) {
   //const fields = Array.from(formElement.children);
   const fields = formElement.querySelectorAll("[name]");
@@ -342,6 +350,12 @@ function pressEnter() {
       return resolve();
     });
   }
+}
+
+function quoteValues(array: string[]) {
+  if (!array) return array;
+  const quotedArray = array.map((value) => `"${value}"`);
+  return quotedArray;
 }
 
 function serialize(object: any) {
