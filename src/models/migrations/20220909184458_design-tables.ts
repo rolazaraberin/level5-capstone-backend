@@ -45,6 +45,7 @@ export async function up(table: any) {
     .createTable("login", function (column: any) {
       column.string("emailHash").primary().notNullable();
       column.string("passwordHash");
+      column.string("token");
       column.string("userID");
       column.foreign("userID").references("user");
       // column.foreign("userid").references("user").deferrable("deferred");
