@@ -39,7 +39,7 @@ router.put(URL.inventory, update.inventoryData);
 router.put(URL.inventory, del.inventoryData);
 
 router.post(URL.login, login.withToken, login.withPassword);
-router.post(URL.logout, logout);
+router.post(URL.logout, logout.withToken);
 router.post(URL.signup, signup);
 
 export default router;
