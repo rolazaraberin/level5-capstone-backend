@@ -3,6 +3,7 @@ import db from "../models/database";
 import { isEmpty, quoteValues } from "../utils/utilityFunctions";
 import { hash } from "../utils/nodeUtils";
 import authenticate from "./authenticate";
+import dbToken from "./dbToken";
 
 const logout = { withToken };
 export default logout;
@@ -12,7 +13,8 @@ async function withToken(request: Request, response: Response) {
     const { email, token } = request.body;
     await authenticate.token(email, token);
     // await authenticateToken(email, token);
-    await authenticate.invalidateToken(email);
+    await dbToken.invalidate(email);
+    // await authenticate.invalidateToken(email);
     // await invalidateToken(email);
     response.status(200).send("SUCCESS: logged out");
   } catch (error) {

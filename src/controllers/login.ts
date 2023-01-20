@@ -5,6 +5,7 @@ import { isEmpty, quoteValues } from "../utils/utilityFunctions";
 import { generateKey } from "../utils/utilityFunctions";
 import { AuthData } from "../models/types";
 import authenticate from "./authenticate";
+import dbToken from "./dbToken";
 
 const login = { withToken, withPassword };
 export default login;
@@ -51,8 +52,10 @@ async function withPassword(request: Request, response: Response) {
     //   return response.status(401).send("ERROR: Cannot retrieve account");
     const authInfo: AuthData = { email, token, isTemporary: false };
     if (!token) {
-      authInfo.token = await getNewToken(email);
-      await saveToken(email, authInfo.token);
+      authInfo.token = await dbToken.getNew(email);
+      // authInfo.token = await authenticate.getNewToken(email);
+      await dbToken.save(email, authInfo.token);
+      // await authenticate.saveToken(email, authInfo.token);
     }
     response.status(200).send(authInfo);
     // if (token) account.token = token;
@@ -121,26 +124,26 @@ async function withPassword(request: Request, response: Response) {
 //   return account;
 // }
 
-async function getNewToken(email: string) {
-  // const emailHash = hash(email);
-  // const passwordHash = hash(password);
-  // const table = "login";
-  // const columns = ["emailHash", "passwordHash"];
-  // const sql = `SELECT * FROM ${table} WHERE ${columns[0]} = '${emailHash}' AND ${columns[1]} = '${passwordHash}'`;
-  // const data = await db.sql(sql);
-  // const userID = isEmpty(data) ? null : data[0].userID;
-  const token = hash(email + generateKey());
-  return token;
-}
+// async function getNewToken(email: string) {
+//   // const emailHash = hash(email);
+//   // const passwordHash = hash(password);
+//   // const table = "login";
+//   // const columns = ["emailHash", "passwordHash"];
+//   // const sql = `SELECT * FROM ${table} WHERE ${columns[0]} = '${emailHash}' AND ${columns[1]} = '${passwordHash}'`;
+//   // const data = await db.sql(sql);
+//   // const userID = isEmpty(data) ? null : data[0].userID;
+//   const token = hash(email + generateKey());
+//   return token;
+// }
 
-async function saveToken(email: string, token: string) {
-  const emailHash = hash(email);
-  const table = "login";
-  const columns = ["token"];
-  const values = quoteValues([token]);
-  const target = "emailHash";
-  const match = quoteValues([emailHash]);
-  const sql = `UPDATE ${table} SET ${columns} = ${values} WHERE ${target} = ${match}`;
-  const result = await db.sql(sql);
-  return result;
-}
+// async function saveToken(email: string, token: string) {
+//   const emailHash = hash(email);
+//   const table = "login";
+//   const columns = ["token"];
+//   const values = quoteValues([token]);
+//   const target = "emailHash";
+//   const match = quoteValues([emailHash]);
+//   const sql = `UPDATE ${table} SET ${columns} = ${values} WHERE ${target} = ${match}`;
+//   const result = await db.sql(sql);
+//   return result;
+// }

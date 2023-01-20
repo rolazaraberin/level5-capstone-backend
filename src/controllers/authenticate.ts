@@ -1,8 +1,14 @@
 import db from "../models/database";
 import { hash } from "../utils/nodeUtils";
-import { isEmpty, quoteValues } from "../utils/utilityFunctions";
+import { isEmpty, quoteValues, generateKey } from "../utils/utilityFunctions";
 
-const authenticate = { password, token, invalidateToken };
+const authenticate = {
+  password,
+  token,
+  // invalidateToken,
+  // getNewToken,
+  // saveToken,
+};
 export default authenticate;
 
 async function password(email: string, password: string) {
@@ -46,19 +52,4 @@ async function token(email: string, token: string) {
   const data = await db.sql(sql);
   const userID = isEmpty(data) ? null : data[0].userID;
   return userID;
-}
-
-async function invalidateToken(email: string) {
-  const emailHash = hash(email);
-  const table = "login";
-  const columns = ["token"];
-  const values = quoteValues([""]);
-  const target = ["emailHash"];
-  const match = quoteValues([emailHash]);
-  const sql = `UPDATE ${table} SET ${columns} = ${values} WHERE ${target} = ${match}`;
-  const data = await db.sql(sql);
-  // const userID = isEmpty(data) ? null : data[0].userID;
-  const { affectedRows } = data;
-  if (affectedRows) return affectedRows;
-  else throw new Error("ERROR: Invalid account");
 }
