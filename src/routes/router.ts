@@ -7,6 +7,7 @@ import del from "./delete";
 import logout from "../controllers/logout";
 import signup from "../controllers/signup";
 import login from "../controllers/login";
+import account from "../controllers/account";
 
 //ROUTING - http://expressjs.com/en/guide/routing.html
 
@@ -18,6 +19,7 @@ const URL = {
   login: "/api/login",
   logout: "/api/logout",
   signup: "/api/signup",
+  account: "/api/account",
 };
 
 const router = express.Router();
@@ -41,5 +43,6 @@ router.put(URL.inventory, del.inventoryData);
 router.post(URL.login, login.withToken, login.withPassword);
 router.post(URL.logout, logout.withToken);
 router.post(URL.signup, signup);
+router.post(URL.account, account.fetchInfo);
 
 export default router;
