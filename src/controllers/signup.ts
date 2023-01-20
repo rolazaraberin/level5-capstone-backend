@@ -1,11 +1,17 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import db from "../models/database";
 import { isEmpty } from "../utils/utilityFunctions";
 import { hash } from "../utils/nodeUtils";
+import sendEmail from "./sendEmail";
 
+const signup = { withPassword };
 export default signup;
 
-async function signup(request: Request, response: Response) {
+async function withPassword(
+  request: Request,
+  response: Response,
+  _next: NextFunction
+) {
   try {
     const { email, password } = request.body;
     await validate(email);
@@ -17,6 +23,7 @@ async function signup(request: Request, response: Response) {
     // if (!account)
     //   return response.status(401).send("ERROR: Cannot retrieve account");
     response.status(200).send(account);
+    sendEmail.signupConfirmation(email);
   } catch (_error) {
     const error = await _error;
     const message = error.message;
