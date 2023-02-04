@@ -8,6 +8,8 @@ import logout from "../controllers/logout";
 import signup from "../controllers/signup";
 import login from "../controllers/login";
 import account from "../controllers/account";
+import httpCodes from "../utils/httpCodes";
+import validate from "../middleware/validate";
 
 //ROUTING - http://expressjs.com/en/guide/routing.html
 
@@ -30,10 +32,10 @@ router.get(URL.api, read.allData);
 router.put(URL.api, update.idKey);
 router.delete(URL.api, del.manualData);
 
-router.post(URL.cart, create.cartData);
-router.get(URL.cart, read.cartData);
-router.put(URL.cart, update.cartData);
-router.delete(URL.cart, del.cartData);
+router.post(URL.cart, validate.token, create.cartData, read.cartData);
+// router.get(URL.cart, validate.token, read.cartData);
+router.put(URL.cart, validate.token, update.cartData);
+router.delete(URL.cart, validate.token, del.cartData);
 
 router.post(URL.inventory, create.inventoryData);
 router.get(URL.inventory, read.inventoryData);
@@ -43,6 +45,16 @@ router.put(URL.inventory, del.inventoryData);
 router.post(URL.login, login.withToken, login.withPassword);
 router.post(URL.logout, logout.withToken);
 router.post(URL.signup, signup.withPassword);
+// router.get(URL.account, account.fetchInfo);
 router.post(URL.account, account.fetchInfo);
+router.delete(URL.account, account.delete);
+
+export async function handleAsyncError(asyncError: any) {
+  const error = await asyncError;
+  const message = error.message;
+  let code = error.code;
+  if (!code || code >= 600) code = httpCodes.error.serverError;
+  return { error, code, message };
+}
 
 export default router;

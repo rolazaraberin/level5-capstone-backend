@@ -1,11 +1,13 @@
 import config, { KnexConfig } from "../../knexfile";
 import Knex from "knex";
-import { omit, filter } from "lodash";
+// import { omit, filter } from "lodash";
 import { getValidValues } from "../utilityFunctionsServer";
 import { Request, Response } from "express";
+import { getCartById } from "../controllers/cartUtils";
 
-const knex = getKnex(config, Knex);
-const cartData = updateData("cart");
+// const knex = getKnex(config, Knex);
+const knex = Knex(config);
+// const cartData = updateData("cart");
 const inventoryData = updateData("inventory");
 
 export default { idKey, cartData, inventoryData, updateData };
@@ -43,9 +45,31 @@ function updateData(route: string) {
       result[itemsTable] = await knex.table(itemsTable).select();
       response.status(200).send(result);
     } catch (error) {
+      debugger;
       response.status(400).send(error.message);
     }
   };
+}
+
+async function cartData(request: Request, response: Response) {
+  try {
+    const validValues = getValidValues(request.body);
+    const table = "cart";
+    const cart = validValues.cart;
+    await knex.table(table).update(cart);
+
+    const itemsTable = (await getCartById(cart.id)).itemsTable;
+    const item = validValues.item;
+    const itemID = item.id;
+    const columnsMatchValues = { id: itemID };
+    await knex.table(itemsTable).update(item).where(columnsMatchValues);
+
+    const result = getCartById(cart.id);
+    response.status(200).send(result);
+  } catch (error) {
+    debugger;
+    response.status(400).send(error.message);
+  }
 }
 
 // function toValidValues(value, property, object) {

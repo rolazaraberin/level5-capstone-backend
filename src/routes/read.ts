@@ -4,12 +4,16 @@ import { isEmpty } from "lodash";
 import { Request, Response } from "express";
 // import { hash } from "../utils/nodeUtils";
 // import db from "../models/database";
+import authenticate from "../controllers/authenticate";
+import account from "../controllers/account";
+import { getCartByToken } from "../controllers/cartUtils";
 
-const cartData = readData("cart");
+// const cartData = readData("cart");
 const inventoryData = readData("inventory");
 export default { manualData, cartData, inventoryData, allData };
 
-const knex = getKnex(config, Knex);
+// const knex = getKnex(config, Knex);
+const knex = Knex(config);
 const replacer = undefined;
 const spacer = " ";
 
@@ -18,7 +22,7 @@ function readData(route: string) {
   if (route === "cart") mainTable = "cart";
   if (route === "inventory") mainTable = "inventory";
 
-  return async function (_request: Request, response: Response) {
+  return async function (request: Request, response: Response) {
     try {
       // result[mainTable] = await knex.select().from(mainTable);
       // let result;
@@ -35,6 +39,29 @@ function readData(route: string) {
       response.status(400).send(error);
     }
   };
+}
+
+async function cartData(request: Request, response: Response) {
+  try {
+    const { email, token } = request.body.user;
+    const cart = await getCartByToken(email, token);
+    // const cartString = JSON.stringify(cart);
+    // const table = "cart";
+    // const columnsMatchValues = {id:cartID};
+    // const data = await knex.table(table).select().where(columnsMatchValues);
+    // let result = { ...data[0] };
+    // const itemsTable = result.itemsTable;
+    // const items = await knex
+    // .select()
+    // .from(itemsTable)
+    // .leftJoin("item", `${itemsTable}.itemID`, "item.id");
+    // result = { ...result, items };
+    // response.status(200).send(cartString);
+    response.status(200).send(cart);
+  } catch (error) {
+    debugger;
+    response.status(400).send(error);
+  }
 }
 
 async function manualData(request: Request, response: Response) {
