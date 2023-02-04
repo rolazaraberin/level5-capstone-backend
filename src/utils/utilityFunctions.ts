@@ -1,6 +1,7 @@
 import { AnyObject } from "./UtilityTypes";
 import _, { cloneDeep, isEqual, values, difference } from "lodash";
 import { unproxy } from "./utilityFunctionsRedux";
+import CryptoJS from "crypto-js";
 
 export {
   // AnyObject,
@@ -16,6 +17,7 @@ export {
   getMultiArrayValue,
   getUniqueValues,
   getObjectProperties,
+  hash,
   isUniqueValue,
   isDOMobjectReady,
   isHTMLfile,
@@ -46,6 +48,7 @@ export {
   serialize,
   stringify,
   temporarilyShrink,
+  timeout,
   toArrayish,
   toFields,
   toFormEntries,
@@ -179,6 +182,17 @@ function getObjectProperties(object: AnyObject) {
   return properties;
 }
 
+function hash(string: string) {
+  try {
+    if (!string) return undefined;
+    const hashObject = CryptoJS.SHA256(string);
+    const hashCode = hashObject.toString(CryptoJS.enc.Hex);
+    return hashCode;
+  } catch (error) {
+    return undefined;
+  }
+}
+
 function isChar(string: string) {
   return typeof string === "string" && string.length === 1;
 }
@@ -207,7 +221,8 @@ function isHTMLfile(filenameString: string) {
 function isEmpty(object: any) {
   if (object instanceof Array) return isArrayEmpty(object);
   else if (object instanceof Object) return isObjectEmpty(object);
-  else if (object === null || object === undefined) return true;
+  else if (object === null || object === undefined || object === "")
+    return true;
   else return false;
 }
 function isArrayEmpty(array: any[]) {
@@ -352,7 +367,7 @@ function pressEnter() {
   }
 }
 
-function quoteValues(array: string[]) {
+function quoteValues(array: (string | number)[]) {
   if (!array) return array;
   const quotedArray = array.map((value) => `"${value}"`);
   return quotedArray;
@@ -525,6 +540,13 @@ function forceStyleSize(
   htmlElement.style.width = `${width}px`;
   return originalSize;
 }
+
+function timeout(milliseconds: number) {
+  return new Promise(function (resolvePromise) {
+    setTimeout(() => resolvePromise("Timeout complete"), milliseconds);
+  });
+}
+
 function toArrayish(
   arrayish: { [index: number]: any } = {},
   value: any,
