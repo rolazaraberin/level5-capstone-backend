@@ -1,1 +1,0 @@
-"use strict";function urlHome(_request,response){response.sendFile("index.html",{root:"public"})}Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=urlHome;
