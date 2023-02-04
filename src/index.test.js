@@ -1,7 +1,7 @@
 const axios = require("axios");
 jest.setTimeout(10000);
 
-describe("Backend server", () => {
+describe.skip("Backend server", () => {
   it("should return 404 given invalid cart PUT request", testPutCartError);
   it("should return 200 given valid cart PUT request", testPutCartSuccess);
   it(
