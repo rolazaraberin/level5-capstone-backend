@@ -1,3 +1,4 @@
+import "reflect-metadata"; //FOR TYPEORM
 import express from "express";
 import cors from "cors";
 import router from "./routes/router";
@@ -21,11 +22,11 @@ function handleListen() {
   console.log(`Listening on ${hostname}:${port}`);
 }
 
-function myCors(_request, response, next) {
-  response.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-  response.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-}
+// function myCors(_request, response, next) {
+//   response.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+//   response.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// }

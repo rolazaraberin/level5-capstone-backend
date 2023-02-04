@@ -1,13 +1,18 @@
-import { filter, isEmpty, reduce } from "lodash";
+// import { filter, isEmpty } from "lodash";
+import { reduce, isEmpty } from "./utils/utilityFunctions";
 
 const validValues = [
-  { table: "cart", properties: ["itemsTable", "totalQuantity", "totalPrice"] },
+  {
+    table: "cart",
+    properties: ["id", "itemsTable", "totalQuantity", "totalPrice"],
+  },
   // { table: "cartItems", properties: ["itemID", "quantity", "subtotal"] },
-  { table: "item", properties: ["itemID", "quantity", "subtotal"] },
+  { table: "item", properties: ["id", "itemID", "quantity", "subtotal"] },
   {
     table: "inventory",
-    properties: ["itemsTable", "totalQuantity", "totalPrice"],
+    properties: ["id", "itemsTable", "totalQuantity", "totalPrice"],
   },
+  { table: "user", properties: ["email", "token"] },
 ];
 
 export { getValidValues, toUsedProperties };
@@ -29,9 +34,13 @@ function getValidValues(object: any, validTablesAndProperties = validValues) {
 
     const validPropertiesAndValues = reduce(
       object[table],
-      toUsedProperties(validProperties),
-      {}
+      toUsedProperties(validProperties)
     );
+    // const validPropertiesAndValues = reduce(
+    //   object[table],
+    //   toUsedProperties(validProperties),
+    //   {}
+    // );
     if (!isEmpty(validPropertiesAndValues))
       validValues[table] = validPropertiesAndValues;
   }
