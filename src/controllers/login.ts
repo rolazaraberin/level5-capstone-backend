@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import db from "../models/database";
+// import db from "../models/database";
 import { hash } from "../utils/nodeUtils";
 import { isEmpty, quoteValues } from "../utils/utilityFunctions";
 import { generateKey } from "../utils/utilityFunctions";
 import { AuthData } from "../models/types";
 import authenticate from "./authenticate";
 import dbToken from "./dbToken";
+import httpCodes from "../utils/httpCodes";
+import { handleAsyncError } from "../routes/router";
 
 const login = { withToken, withPassword };
 export default login;
@@ -31,9 +33,10 @@ async function withToken(
     // account.token = token;
     // response.status(200).send(account);
   } catch (asyncError) {
-    const error = await asyncError;
-    const message = error.message;
-    const code = error.code;
+    const { code, message } = await handleAsyncError(asyncError);
+    // const error = await asyncError;
+    // const message = error.message;
+    // const code = error.code;
     response.status(code).send(message);
   }
 }
@@ -52,7 +55,7 @@ async function withPassword(request: Request, response: Response) {
     //   return response.status(401).send("ERROR: Cannot retrieve account");
     const authInfo: AuthData = { email, token, isTemporary: false };
     if (!token) {
-      authInfo.token = await dbToken.getNew(email);
+      authInfo.token = dbToken.getNew(email);
       // authInfo.token = await authenticate.getNewToken(email);
       await dbToken.save(email, authInfo.token);
       // await authenticate.saveToken(email, authInfo.token);
@@ -67,7 +70,9 @@ async function withPassword(request: Request, response: Response) {
   } catch (asyncError) {
     const error = await asyncError;
     const message = error.message;
-    const code = error.code;
+    let code = error.code || httpCodes.error.general;
+    if (code >= 600 || typeof code === "string")
+      code = httpCodes.error.serverError;
     response.status(code).send(message);
   }
 }

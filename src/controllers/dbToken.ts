@@ -1,6 +1,6 @@
 import { generateKey, quoteValues } from "../utils/utilityFunctions";
 import { hash } from "../utils/nodeUtils";
-import db from "../models/database";
+import { knex } from "../models/database";
 
 const dbToken = {
   invalidate,
@@ -12,19 +12,24 @@ export default dbToken;
 async function invalidate(email: string) {
   const emailHash = hash(email);
   const table = "login";
-  const columns = ["token"];
-  const values = quoteValues([""]);
-  const target = ["emailHash"];
-  const match = quoteValues([emailHash]);
-  const sql = `UPDATE ${table} SET ${columns} = ${values} WHERE ${target} = ${match}`;
-  const data = await db.sql(sql);
+  // const columns = ["token"];
+  // const values = quoteValues([""]);
+  // const target = ["emailHash"];
+  // const match = quoteValues([emailHash]);
+  // const data = await db.sql(sql);
+  const columnsToValues = { token: "" };
+  const columnsMatchValues = { emailHash };
+  const data = await knex
+    .table(table)
+    .update(columnsToValues)
+    .where(columnsMatchValues);
   // const userID = isEmpty(data) ? null : data[0].userID;
-  const { affectedRows } = data;
-  if (affectedRows) return affectedRows;
+  const { affectedRows } = data as any;
+  if (affectedRows || data) return affectedRows || data;
   else throw new Error("ERROR: Invalid account");
 }
 
-async function getNew(email: string) {
+function getNew(email: string) {
   // const emailHash = hash(email);
   // const passwordHash = hash(password);
   // const table = "login";
@@ -43,7 +48,13 @@ async function save(email: string, token: string) {
   const values = quoteValues([token]);
   const target = "emailHash";
   const match = quoteValues([emailHash]);
+  const columnsToValues = { token };
+  const columnsMatchValues = { emailHash };
   const sql = `UPDATE ${table} SET ${columns} = ${values} WHERE ${target} = ${match}`;
-  const result = await db.sql(sql);
+  const result = await knex
+    .table(table)
+    .update(columnsToValues)
+    .where(columnsMatchValues);
+  // const result = await db.sql(sql);
   return result;
 }

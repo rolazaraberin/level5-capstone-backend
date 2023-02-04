@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
-import db from "../models/database";
+// import db from "../models/database";
 import { isEmpty, quoteValues } from "../utils/utilityFunctions";
 import { hash } from "../utils/nodeUtils";
 import authenticate from "./authenticate";
 import dbToken from "./dbToken";
+import httpCodes from "../utils/httpCodes";
+import { handleAsyncError } from "../routes/router";
 
 const logout = { withToken };
 export default logout;
@@ -17,10 +19,12 @@ async function withToken(request: Request, response: Response) {
     // await authenticate.invalidateToken(email);
     // await invalidateToken(email);
     response.status(200).send("SUCCESS: logged out");
-  } catch (error) {
-    const message = await error;
-    debugger;
-    response.status(400).send(message);
+  } catch (asyncError) {
+    const { error, code, message } = await handleAsyncError(asyncError);
+    // const error = await asyncError;
+    // const message = error.message;
+    // response.status(httpCodes.error.unauthenticated).send(message);
+    response.status(code).send(message);
   }
 }
 

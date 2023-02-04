@@ -32,7 +32,8 @@ function deleteConfirmation(email: string) {
 
 async function send(message: MailDataRequired) {
   try {
-    await sendGrid.send(message);
+    const response = await sendGrid.send(message);
+    return response[0].statusCode;
   } catch (asyncError) {
     const error = await asyncError;
     console.log(error);
