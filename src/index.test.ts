@@ -1,4 +1,6 @@
-const axios = require("axios");
+// const axios = require("axios");
+import axios from "axios";
+
 jest.setTimeout(10000);
 
 describe.skip("Backend server", () => {
