@@ -22,7 +22,7 @@ module.exports = {
 function getEntryOptions() {
   //INFO - https://webpack.js.org/configuration/entry-context/#entry
   const entryOptions = {
-    index: "./build/src/index", //THE EXTENSION IS CHOSEN BY THE RESOLVE OPTION
+    index: "./build/index", //THE EXTENSION IS CHOSEN BY THE RESOLVE OPTION
   };
   return entryOptions;
 }
@@ -174,7 +174,7 @@ function getPluginsOptions() {
 function getOutputOptions() {
   //INFO - https://webpack.js.org/concepts/output
   const outputOptions = {
-    path: path.resolve(__dirname, "./dist/src"), //PLACE WEBPACK FILES IN THIS DIRECTORY
+    path: path.resolve(__dirname, "./dist"), //PLACE WEBPACK FILES IN THIS DIRECTORY
   };
   return outputOptions;
 }

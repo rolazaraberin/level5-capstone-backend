@@ -6,6 +6,7 @@
   "mainHTML": "src/index.html",
   "scripts": {
     "start": "nodemon ./src/index.ts",
+    "dist": "nodemon ./dist/index.js",
     "server": "nodemon ./src/index.ts",
     "upload": "git push github main",
     "deploy": "git push heroku main",
@@ -22,7 +23,7 @@
     "rollback-elephantsql": "knex migrate:rollback --env elephantsql",
     "migration-typeorm": "typeorm-ts-node-commonjs migration:run --dataSource data-source.ts",
     "rollback-typeorm": "typeorm-ts-node-commonjs migration:revert --dataSource data-source.ts",
-    "build": "rm build -rf && tsc && ts-node build",
+    "build": "rm build -rf && tsc && node dist.js",
     "webpack": "webpack --config webpack.config.dist.js",
     "test": "jest",
     "watch": "jest --watchAll",
