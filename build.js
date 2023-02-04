@@ -16,12 +16,14 @@ const terserOptions = {
   },
 };
 
-function getAllFiles(dirPath: string, arrayOfFiles: string[] = []) {
+// function getAllFiles(dirPath: string, arrayOfFiles: string[] = []) {
+function getAllFiles(dirPath, arrayOfFiles = []) {
   let files = fs.readdirSync(dirPath);
 
   // arrayOfFiles = arrayOfFiles || [];
 
-  files.forEach(function (file: string) {
+  // files.forEach(function (file: string) {
+  files.forEach(function (file) {
     if (fs.statSync(dirPath + "/" + file).isDirectory()) {
       arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles);
     } else {
@@ -32,7 +34,8 @@ function getAllFiles(dirPath: string, arrayOfFiles: string[] = []) {
   return arrayOfFiles.filter((path) => path.match(/\.js$/));
 }
 
-function minifyFiles(filePaths: string[]) {
+// function minifyFiles(filePaths: string[]) {
+function minifyFiles(filePaths) {
   filePaths.forEach(async (filePath) => {
     const data = fs.readFileSync(filePath, "utf8");
     const minified = await Terser.minify(data, terserOptions);

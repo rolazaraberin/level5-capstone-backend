@@ -8,13 +8,14 @@ dotenv.config();
 const knexConfig = getConfig("elephantsql");
 export default knexConfig;
 
-export interface KnexConfig {
-  mode: string;
-  development: any;
-  remote: any;
-}
+// export interface KnexConfig {
+//   mode: string;
+//   development: any;
+//   remote: any;
+// }
 
-function getConfig(configName: string) {
+// function getConfig(configName: string) {
+function getConfig(configName) {
   const configurations = {
     mode: "development",
     development: {

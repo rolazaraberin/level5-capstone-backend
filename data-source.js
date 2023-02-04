@@ -8,13 +8,15 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 // const AppDataSource: DataSource = getDataSource("mysql");
-const AppDataSource: DataSource = getDataSource("elephantsql");
+// const AppDataSource: DataSource = getDataSource("elephantsql");
+const AppDataSource = getDataSource("elephantsql");
 export default AppDataSource;
 // export { AppDataSource };
 // export const AppDataSource = mysql();
 // export const AppDataSource = elephantsql();
 
-function getDataSource(dataSouceName: string) {
+// function getDataSource(dataSouceName: string) {
+function getDataSource(dataSouceName) {
   const dataSources = {
     mysql: new DataSource({
       type: "mysql",
