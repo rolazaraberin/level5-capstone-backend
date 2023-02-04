@@ -22,7 +22,7 @@ module.exports = {
 function getEntryOptions() {
   //INFO - https://webpack.js.org/configuration/entry-context/#entry
   const entryOptions = {
-    index: "./build/src/index", //THE EXTENSION IS CHOSEN BY THE RESOLVE OPTION
+    index: "./src/index", //THE EXTENSION IS CHOSEN BY THE RESOLVE OPTION
   };
   return entryOptions;
 }
@@ -174,7 +174,20 @@ function getPluginsOptions() {
 function getOutputOptions() {
   //INFO - https://webpack.js.org/concepts/output
   const outputOptions = {
-    path: path.resolve(__dirname, "./dist/src"), //PLACE WEBPACK FILES IN THIS DIRECTORY
+    path: path.resolve(__dirname, "./build"), //PLACE WEBPACK FILES IN THIS DIRECTORY
+    // filename: "[path]/[name].[ext]", //SUBTITUTIONS - https://webpack.js.org/configuration/output/#template-strings
+    // publicPath: "",
+    //PRESERVE FOLDER STRUCTURE
+    // assetModuleFilename: "[path]/[name].[ext]",
+    // assetModuleFilename: (pathData) => {
+    //   const filepath = path
+    //     .dirname(pathData.filename)
+    //     .split("/")
+    //     .slice(1)
+    //     .join("/");
+    //   return `${filepath}/[name].[ext]`;
+    // return `${filepath}/[name].[hash][ext][query]`;
+    // },
   };
   return outputOptions;
 }
