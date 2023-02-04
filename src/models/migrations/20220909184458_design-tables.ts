@@ -1,7 +1,7 @@
 // export default { up, down };
 
 export async function up(table: any) {
-  return table.schema
+  return await table.schema
     .createTable("item", function (column: any) {
       column.increments("id").primary().notNullable();
       column.string("name");
@@ -12,43 +12,38 @@ export async function up(table: any) {
     .createTable("cart", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
-      column.string("itemsTable").primary().notNullable();
+      column.increments("id").primary().notNullable();
+      column.string("itemsTable");
       column.integer("totalQuantity");
       column.integer("totalPrice");
+      column.foreign("itemsTable");
     })
-    .createTable("cartItems", function (column: any) {
+    .createTable("cartItems1", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
-      column.integer("itemID").primary().notNullable();
+      column.integer("id").primary().notNullable();
+      column.integer("itemID");
       column.integer("quantity");
       column.integer("subtotal");
+      column.foreign("id");
+      column.foreign("itemID");
     })
     .createTable("inventory", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
-      column.string("itemsTable").primary().notNullable();
+      column.increments("id").primary().notNullable();
+      column.string("itemsTable");
       column.integer("totalQuantity");
       column.integer("totalPrice");
+      column.foreign("itemsTable");
     })
     .createTable("inventoryItems", function (column: any) {
-      //TODO: CREATE NEW CART TABLE PER USER
-
-      column.integer("itemID").primary().notNullable();
+      column.integer("id").primary().notNullable();
+      column.integer("itemID");
       column.integer("quantity");
       column.integer("subtotal");
-    })
-    .createTable("user", function (column: any) {
-      column.increments("id").primary().notNullable();
-      column.string("name");
-      column.string("email");
-    })
-    .createTable("login", function (column: any) {
-      column.string("emailHash").primary().notNullable();
-      column.string("passwordHash");
-      column.string("token");
-      column.string("userID");
-      column.foreign("userID").references("user");
-      // column.foreign("userid").references("user").deferrable("deferred");
+      column.foreign("id");
+      column.foreign("itemID");
     });
 }
 
@@ -56,9 +51,7 @@ export async function down(table: any) {
   return table.schema
     .dropTable("item")
     .dropTable("cart")
-    .dropTable("cartItems")
+    .dropTable("cartItems1")
     .dropTable("inventory")
-    .dropTable("inventoryItems")
-    .dropTable("user")
-    .dropTable("login");
+    .dropTable("inventoryItems");
 }
