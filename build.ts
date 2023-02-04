@@ -1,3 +1,7 @@
+//UING TERSER ON DIRECTORIES
+//INFO - https://github.com/terser/terser/issues/544#issuecomment-598192241
+//API REFERENCE - https://terser.org/docs/api-reference
+
 var Terser = require("terser");
 var fs = require("fs");
 var path = require("path");
