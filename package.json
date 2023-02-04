@@ -23,7 +23,7 @@
     "rollback-elephantsql": "knex migrate:rollback --env elephantsql",
     "migration-typeorm": "typeorm-ts-node-commonjs migration:run --dataSource data-source.ts",
     "rollback-typeorm": "typeorm-ts-node-commonjs migration:revert --dataSource data-source.ts",
-    "build": "rm build -rf && tsc && node dist.js",
+    "build": "rm build -rf && tsc && node build.js",
     "webpack": "webpack --config webpack.config.dist.js",
     "test": "jest",
     "watch": "jest --watchAll",
