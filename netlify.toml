@@ -1,4 +1,6 @@
 # CONFIGURATION FILE - https://docs.netlify.com/configure-builds/file-based-configuration/#sample-netlify-toml-file
+# ENVIRONMENT VARIABLES - https://docs.netlify.com/environment-variables/get-started/#create-variables-with-a-netlify-configuration-file
+
 # [build.processing]
 #   skip_processing = true
 
