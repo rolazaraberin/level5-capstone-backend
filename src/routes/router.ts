@@ -1,6 +1,9 @@
+import httpCodes from "../utils/httpCodes";
 import express from "express";
 import urlHome from "./home";
+import { testPage } from "./testPage";
 import create from "./create";
+// import create from "./createTest";
 import read from "./read";
 import update from "./update";
 import del from "./delete";
@@ -8,7 +11,6 @@ import logout from "../controllers/logout";
 import signup from "../controllers/signup";
 import login from "../controllers/login";
 import account from "../controllers/account";
-import httpCodes from "../utils/httpCodes";
 import validate from "../middleware/validate";
 
 //ROUTING - http://expressjs.com/en/guide/routing.html
@@ -22,11 +24,12 @@ const URL = {
   logout: "/api/logout",
   signup: "/api/signup",
   account: "/api/account",
+  test: "/test",
 };
 
 const router = express.Router();
 router.get(URL.baseUrl, urlHome);
-
+router.get(URL.test, testPage);
 router.post(URL.api, create.manualData);
 router.get(URL.api, read.allData);
 router.put(URL.api, update.idKey);
