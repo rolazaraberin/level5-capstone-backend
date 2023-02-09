@@ -13,6 +13,7 @@ export {
   filterSort,
   floorOf,
   generateKey,
+  getCommandLineParameters,
   getFormEntries,
   getMultiArrayValue,
   getUniqueValues,
@@ -148,6 +149,12 @@ function floorOf(number: number, decimalPlaces: number) {
 let numberOfKeysGenerated = 0;
 function generateKey() {
   return new Date().getTime() + "-" + numberOfKeysGenerated++;
+}
+
+function getCommandLineParameters() {
+  const commandLine = process.argv;
+  const parameters = commandLine.slice(2);
+  return parameters;
 }
 
 function getFormEntries(formElement: HTMLFormElement) {
