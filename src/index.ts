@@ -15,7 +15,9 @@ app.use(cors());
 app.use(express.static("public"));
 app.use(express.json()); //REQUIRED TO ACCEPT REQUESTS WITH JSON BODY
 app.use(baseUrl, router);
-app.listen(port, handleListen);
+// app.listen(port, handleListen);
+
+export default app;
 // app.listen(port, hostname, handleListen);
 
 function handleListen() {
