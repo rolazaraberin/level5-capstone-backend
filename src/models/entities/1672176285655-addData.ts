@@ -27,13 +27,13 @@ class addData1672176285655 implements MigrationInterface {
     user.name = "Rolazar Aberin";
     user.cartID = 1;
     const rolazar = await users.save(user);
-    // await timeout(9000);
+    await timeout(9000);
 
     user = new User();
     user.email = "correct@email.com";
     user.name = "correct";
     const correct = await users.save(user);
-    // await timeout(3000);
+    await timeout(3000);
 
     login = new Login();
     login.emailHash =
@@ -42,7 +42,8 @@ class addData1672176285655 implements MigrationInterface {
       "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8";
     login.user = rolazar;
     await logins.save(login);
-    // await timeout(3000);
+    await timeout(3000);
+
     // await logins.save({
     //   emailHash:
     //     "1e9b4ffec7e769ede61e5ce942193ab13db7e9e8d170bb89b6411cfc7dec5e18",

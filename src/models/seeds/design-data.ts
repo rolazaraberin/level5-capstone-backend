@@ -67,6 +67,7 @@ export async function seed(knex: any) {
 
   await knex("inventory").insert([
     {
+      id: 1,
       itemsTable: "inventoryItems",
       totalQuantity: 30,
       totalPrice: 5525,
@@ -88,6 +89,7 @@ export async function seed(knex: any) {
 
   await knex("cart").insert([
     {
+      id: 1,
       itemsTable: "cartItems1",
       totalQuantity: 5,
       totalPrice: 1045,
