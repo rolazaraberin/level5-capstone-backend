@@ -30,6 +30,7 @@ const URL = {
 const router = express.Router();
 router.get(URL.baseUrl, urlHome);
 router.get(URL.test, testPage);
+router.post(URL.test, testPage);
 router.post(URL.api, create.manualData);
 router.get(URL.api, read.allData);
 router.put(URL.api, update.idKey);
