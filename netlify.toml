@@ -1,5 +1,6 @@
 # CONFIGURATION FILE - https://docs.netlify.com/configure-builds/file-based-configuration/#sample-netlify-toml-file
 # ENVIRONMENT VARIABLES - https://docs.netlify.com/environment-variables/get-started/#create-variables-with-a-netlify-configuration-file
+# SET NODE VERSION - https://docs.netlify.com/configure-builds/manage-dependencies/#node-js-and-javascript
 
 # [build.processing]
 #   skip_processing = true
@@ -7,6 +8,7 @@
 # [build.processing.js]
 #   bundle = false
 #   minify = false
+
 [build.environment]
   NODE_VERSION = "18.14.0"
 
