@@ -1,0 +1,1 @@
+"use strict";function testPage(request,response){response.send("Welcome test!")}Object.defineProperty(exports,"__esModule",{value:!0}),exports.testPage=void 0,exports.testPage=testPage;
