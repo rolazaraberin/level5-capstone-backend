@@ -7,9 +7,9 @@
 # [build.processing.js]
 #   bundle = false
 #   minify = false
-[context.build.environment]
-  NODE_VERSION = "18.x"
-  
+# [context.build.environment]
+#   NODE_VERSION = "18.x"
+
 [functions]
   directory = "build/lambda/" #DEFAULT: "netlify/functions/"
   external_node_modules = ["knex","pg"] #DEFAULT: []

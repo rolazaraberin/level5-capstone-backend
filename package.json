@@ -5,7 +5,7 @@
   "main": "build/src/index.js",
   "mainHTML": "dist/index.html",
   "engines": {
-    "node": "18.x"
+    "node": "18.14.0"
   },
   "scripts": {
     "start-netlify": "netlify dev",
