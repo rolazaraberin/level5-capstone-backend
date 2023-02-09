@@ -1,0 +1,26 @@
+# CONFIGURATION FILE - https://docs.netlify.com/configure-builds/file-based-configuration/#sample-netlify-toml-file
+# [build.processing]
+#   skip_processing = true
+
+# [build.processing.js]
+#   bundle = false
+#   minify = false
+
+[functions]
+  directory = "build/lambda/" #DEFAULT: "netlify/functions/"
+  external_node_modules = ["knex","pg"] #DEFAULT: []
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/app/:splat"
+  status = 200
+  # SPLATS = https://docs.netlify.com/routing/redirects/redirect-options/#splats
+
+[dev]
+  publish = "dist"
+  port = 8000 #DEFAULT: 8888
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
