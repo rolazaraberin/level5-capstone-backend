@@ -20,6 +20,9 @@
   publish = "dist"
   port = 8000 #DEFAULT: 8888
 
+[context.dev.environment]
+  hostEnvironment = "lambda"
+
 [[headers]]
   for = "/*"
   [headers.values]

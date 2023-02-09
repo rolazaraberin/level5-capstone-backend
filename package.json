@@ -8,6 +8,7 @@
     "start-netlify": "netlify dev",
     "start": "nodemon ./src/index.ts",
     "start-build": "nodemon ./build/src/index.js",
+    "build-start-netlify": "npm run build-netlify && npm run start-netlify",
     "server": "netlify dev",
     "dist": "nodemon ./dist/index.js",
     "upload": "git push github main",
