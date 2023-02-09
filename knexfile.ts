@@ -2,22 +2,24 @@
 // const path = require("path");
 // import dotenv from "dotenv";
 import dotenv from "dotenv";
+// const dotenv = require("dotenv");
 dotenv.config();
 
 // const knexConfig = getConfig("mysql");
-const knexConfig = getConfig("elephantsql");
+const knexConfig = getConfig("cockroachdb");
+// module.exports = knexConfig;
 export default knexConfig;
 
-// export interface KnexConfig {
-//   mode: string;
-//   development: any;
-//   remote: any;
-// }
+export interface KnexConfig {
+  mode: string;
+  development: any;
+  remote: any;
+}
 
-// function getConfig(configName: string) {
-function getConfig(configName) {
+function getConfig(configName: string) {
+  // function getConfig(configName) {
   const configurations = {
-    mode: "development",
+    // mode: "cockroachdb",
     development: {
       client: "mysql",
       connection: {
@@ -78,6 +80,22 @@ function getConfig(configName) {
       },
       useNullAsDefault: true,
       pool: { min: 0, max: 1 },
+    },
+    cockroachdb: {
+      client: "cockroachdb",
+      connectionString: process.env.cockroachdb, //CONNECT TO COCKROACHDB
+      connection: {
+        connectionString: process.env.cockroachdb, //CONNECT TO COCKROACHDB
+        ssl: { rejectUnauthorized: false },
+      },
+      migrations: {
+        directory: "./src/models/migrations",
+      },
+      seeds: {
+        directory: "./src/models/seeds",
+      },
+      useNullAsDefault: true,
+      pool: { min: 0, max: 5 },
     },
     remote: {
       client: "pg",
