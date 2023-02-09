@@ -6,7 +6,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // const knexConfig = getConfig("mysql");
-const knexConfig = getConfig("cockroachdb");
+const databaseName = process.env.mode;
+const knexConfig = getConfig(databaseName);
 // module.exports = knexConfig;
 export default knexConfig;
 

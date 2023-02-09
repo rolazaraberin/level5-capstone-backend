@@ -22,7 +22,8 @@ dotenv.config();
 
 // const AppDataSource: DataSource = getDataSource("mysql");
 // const AppDataSource: DataSource = getDataSource("elephantsql");
-const AppDataSource = getDataSource("cockroachdb");
+const databaseName = process.env.mode;
+const AppDataSource = getDataSource(databaseName);
 // module.exports = AppDataSource;
 // exports = AppDataSource;
 export default AppDataSource;
