@@ -12,6 +12,7 @@ import signup from "../controllers/signup";
 import login from "../controllers/login";
 import account from "../controllers/account";
 import validate from "../middleware/validate";
+import api from "../controllers/api";
 
 //ROUTING - http://expressjs.com/en/guide/routing.html
 
@@ -32,7 +33,8 @@ router.get(URL.baseUrl, urlHome);
 router.get(URL.test, testPage);
 router.post(URL.test, testPage);
 router.post(URL.api, create.manualData);
-router.get(URL.api, read.allData);
+// router.get(URL.api, read.allData);
+router.get(URL.api, api.ping);
 router.put(URL.api, update.idKey);
 router.delete(URL.api, del.manualData);
 
