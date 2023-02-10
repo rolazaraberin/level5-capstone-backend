@@ -2,6 +2,7 @@ import "reflect-metadata"; //FOR TYPEORM
 import express from "express";
 import cors from "cors";
 import router from "./routes/router";
+// import serverless from "serverless-http";
 
 const app = express();
 const hostname = process.env.HOST || "localhost";
@@ -21,6 +22,7 @@ if (hostEnvironment !== "lambda") {
   app.listen(port, handleListen);
 }
 
+// export default serverless(app);
 export default app;
 // app.listen(port, hostname, handleListen);
 
