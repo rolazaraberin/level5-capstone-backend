@@ -23,7 +23,7 @@
   # SPLATS = https://docs.netlify.com/routing/redirects/redirect-options/#splats
 
 [dev]
-  publish = "dist"
+  publish = "public"
   port = 8000 #DEFAULT: 8888
 
 [context.dev.environment]
