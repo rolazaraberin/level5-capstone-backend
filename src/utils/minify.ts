@@ -10,7 +10,11 @@ const Terser = require("terser");
 // import { minify } from "terser";
 import fs from "fs";
 import path from "path";
-import { getCommandLineParameters, pressEnter } from "./utilityFunctions";
+import {
+  getCommandLineParameters,
+  pressEnter,
+  timeout,
+} from "./utilityFunctions";
 
 const terserOptions = {
   mangle: false,
@@ -28,12 +32,15 @@ const folderToMinify = getCommandLineParameters()[0];
 const pathToMinify = path.resolve(folderToMinify);
 if (folderToMinify) {
   console.log("WARNING: THIS WILL OVERWRITE FILES IN:\n" + pathToMinify);
-  console.log("PRESS ENTER TO CONTINUE. PRESS CTRL+C TO CANCEL");
-  pressEnter().then(() => {
+  console.log("PRESS PRESS CTRL+C TO CANCEL");
+  // console.log("PRESS ENTER TO CONTINUE. PRESS CTRL+C TO CANCEL");
+  // pressEnter().then(() => {
+  timeout(10000).then(() => {
     const files = getAllFiles(folderToMinify);
-    // const files = getAllFiles("./build");
     minifyFiles(files);
   });
+
+  // });
 } else {
   console.log("\nPlease specify the folder to minify.\n");
 }
