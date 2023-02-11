@@ -19,6 +19,8 @@ jobs:
           ls ${{ github.workspace }}
           echo "🖥️ The workflow is now ready to test your code on the runner."
           npm install
+      - name: Run tests
+        run: |
           npm test
           echo "🍏 This job's status is ${{ job.status }}."
   Build:
