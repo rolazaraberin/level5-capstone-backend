@@ -41,7 +41,8 @@
     "build-netlify": "netlify build",
     "minify": "node ./minify.js build",
     "webpack": "webpack --config webpack.config.dist.js",
-    "test": "jest",
+    "test-build": "jest --runInBand --rootDir build",
+    "test": "jest --runInBand",
     "watch": "jest --watchAll",
     "rebuild": "cd .. && npm run webpack && cd dist && npm start"
   },

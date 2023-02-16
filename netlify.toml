@@ -9,6 +9,10 @@
 #   bundle = false
 #   minify = false
 
+[build]
+  command = "npm run test-build"
+  publish = "public"
+  
 [build.environment]
   NODE_VERSION = "18.14.0"
 

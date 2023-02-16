@@ -21,7 +21,7 @@ jobs:
           npm install
       - name: Run tests
         run: |
-          npm test
+          npm run test-build
           echo "🍏 This job's status is ${{ job.status }}."
   Build:
     runs-on: ubuntu-latest
