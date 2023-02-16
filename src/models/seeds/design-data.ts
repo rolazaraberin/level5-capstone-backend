@@ -94,6 +94,12 @@ export async function seed(knex: any) {
       totalQuantity: 5,
       totalPrice: 1045,
     },
+    {
+      id: 2,
+      itemsTable: "cartItems2",
+      totalQuantity: 1,
+      totalPrice: 1000,
+    },
   ]);
 
   await knex("cartItems1").delete();
@@ -102,6 +108,12 @@ export async function seed(knex: any) {
     { id: 1, itemID: 1, quantity: 1, subtotal: 1000 },
     { id: 3, itemID: 3, quantity: 1, subtotal: 15 },
     { id: 5, itemID: 5, quantity: 3, subtotal: 30 },
+  ]);
+
+  await knex("cartItems2").delete();
+
+  await knex("cartItems2").insert([
+    { id: 1, itemID: 1, quantity: 1, subtotal: 1000 },
   ]);
 
   // await knex("user").delete();

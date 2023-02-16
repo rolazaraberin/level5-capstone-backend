@@ -3,12 +3,15 @@
 export async function up(table: any) {
   return await table.schema
     .createTable("item", function (column: any) {
-      column.increments("id").primary().notNullable();
+      // column.increments("id").primary().notNullable();
+      column.increments("id").notNullable();
       column.string("name");
       column.float("price");
       column.string("image");
       column.string("description");
     })
+    .raw("ALTER TABLE item ADD PRIMARY KEY ( id )")
+    .raw("CREATE INDEX itemIndex ON item ( name, description, price )")
     .createTable("cart", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
@@ -16,9 +19,20 @@ export async function up(table: any) {
       column.string("itemsTable");
       column.integer("totalQuantity");
       column.integer("totalPrice");
-      column.foreign("itemsTable");
+      // column.foreign("itemsTable");
     })
+    .raw("ALTER TABLE cart ADD FOREIGN KEY ( itemsTable )")
     .createTable("cartItems1", function (column: any) {
+      //TODO: CREATE NEW CART TABLE PER USER
+
+      column.integer("id").primary().notNullable();
+      column.integer("itemID");
+      column.integer("quantity");
+      column.integer("subtotal");
+      column.foreign("id");
+      column.foreign("itemID");
+    })
+    .createTable("cartItems2", function (column: any) {
       //TODO: CREATE NEW CART TABLE PER USER
 
       column.integer("id").primary().notNullable();
@@ -52,6 +66,7 @@ export async function down(table: any) {
     .dropTable("item")
     .dropTable("cart")
     .dropTable("cartItems1")
+    .dropTable("cartItems2")
     .dropTable("inventory")
     .dropTable("inventoryItems");
 }
