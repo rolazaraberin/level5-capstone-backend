@@ -1,66 +1,61 @@
-// const axios = require("axios");
 import axios from "axios";
+import { fullURL } from "./routes/router";
+import dotenv from "dotenv";
+dotenv.config();
 
-jest.setTimeout(10000);
+// const host = process.env.host;
+// const cartApi = URL.cart;
+const email = process.env.userEmail;
+const password = process.env.userPassword;
+jest.setTimeout(25000);
 
-describe.skip("Backend server", () => {
-  it("should return 404 given invalid cart PUT request", testPutCartError);
-  it("should return 200 given valid cart PUT request", testPutCartSuccess);
-  it(
-    "should return 404 given invalid cart DELETE request",
+describe("Backend server", () => {
+  it("should return error given invalid cart PUT request", testPutCartError);
+  it("should return success given valid cart PUT request", testPutCartSuccess);
+  it.skip(
+    "should error given invalid cart DELETE request",
     testDeleteItemError
   );
-  it(
-    "should return 200 given invalid cart DELETE request",
+  it.skip(
+    "should success given invalid cart DELETE request",
     testDeleteItemSuccess
   );
 });
 
-function testPutCartError() {
-  const request = axios.put(
-    "https://level4-capstone-backend.herokuapp.com/api/cart",
-    {
+async function testPutCartError() {
+  const data = { cart: {}, item: {} };
+  const request = axios.put(fullURL.cart, data);
+  await expect(request).rejects.toThrow();
+}
+
+async function testPutCartSuccess() {
+  const data = {
+    cart: { itemsTable: "cartItems1" },
+    item: { id: 3, itemID: 3 },
+    user: { email, password },
+  };
+  const request = axios.put(fullURL.cart, data);
+  await expect(request).resolves.not.toThrow();
+}
+
+async function testDeleteItemError() {
+  const data = {
+    data: {
       cart: {},
       item: {},
-    }
-  );
-  expect(request).rejects.toThrow();
+    },
+  };
+  const request = axios.delete(fullURL.cart, data);
+  await expect(request).rejects.toThrow();
 }
 
-function testPutCartSuccess() {
-  const request = axios.put(
-    "https://level4-capstone-backend.herokuapp.com/api/cart",
-
-    {
+async function testDeleteItemSuccess() {
+  const data = {
+    data: {
       cart: { itemsTable: "cartItems" },
-      item: { id: 3, itemID: 3 },
-    }
-  );
-  expect(request).resolves.not.toThrow();
-}
-
-function testDeleteItemError() {
-  const request = axios.delete(
-    "https://level4-capstone-backend.herokuapp.com/api/cart",
-    {
-      data: {
-        cart: {},
-        item: {},
-      },
-    }
-  );
-  expect(request).rejects.toThrow();
-}
-
-function testDeleteItemSuccess() {
-  const request = axios.delete(
-    "https://level4-capstone-backend.herokuapp.com/api/cart",
-    {
-      data: {
-        cart: { itemsTable: "cartItems" },
-        item: { id: 1, itemID: 1 },
-      },
-    }
-  );
-  expect(request).resolves.not.toThrow();
+      item: { id: 1, itemID: 1 },
+    },
+  };
+  const request = axios.delete(fullURL.cart, data);
+  await expect(request).resolves.not.toThrow();
 }

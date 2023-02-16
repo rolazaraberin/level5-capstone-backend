@@ -5,7 +5,8 @@ import router from "./routes/router";
 // import serverless from "serverless-http";
 
 const app = express();
-const hostname = process.env.HOST || "localhost";
+const hostname = "http://localhost";
+// const hostname = process.env.HOST || "localhost";
 // const port = Number(process.env.PORT) || 8080;
 const port = process.env.PORT || 8000;
 const baseUrl = "/";
