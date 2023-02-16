@@ -13,10 +13,13 @@ import login from "../controllers/login";
 import account from "../controllers/account";
 import validate from "../middleware/validate";
 import api from "../controllers/api";
+import dotenv from "dotenv";
+dotenv.config();
 
 //ROUTING - http://expressjs.com/en/guide/routing.html
 
-const URL = {
+export const hostURL = process.env.host;
+export const URL = {
   baseUrl: "/",
   api: "/api",
   cart: "/api/cart",
@@ -26,6 +29,18 @@ const URL = {
   signup: "/api/signup",
   account: "/api/account",
   test: "/test",
+};
+export const fullURL = {
+  host: hostURL,
+  root: hostURL + URL.baseUrl,
+  api: hostURL + URL.api,
+  cart: hostURL + URL.cart,
+  inventory: hostURL + URL.inventory,
+  login: hostURL + URL.login,
+  logout: hostURL + URL.logout,
+  signup: hostURL + URL.signup,
+  account: hostURL + URL.account,
+  test: hostURL + URL.test,
 };
 
 const router = express.Router();

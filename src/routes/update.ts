@@ -4,6 +4,7 @@ import Knex from "knex";
 import { getValidValues } from "../utilityFunctionsServer";
 import { Request, Response } from "express";
 import { getCartById } from "../controllers/cartUtils";
+import validate from "../middleware/validate";
 
 // const knex = getKnex(config, Knex);
 const knex = Knex(config);
@@ -56,7 +57,10 @@ async function cartData(request: Request, response: Response) {
     const validValues = getValidValues(request.body);
     const table = "cart";
     const cart = validValues.cart;
-    await knex.table(table).update(cart);
+    const user = validValues.user;
+    const cartIdMatches = { id: cart.id };
+    await validate.cart(cart, user);
+    await knex.table(table).update(cart).where(cartIdMatches);
 
     const itemsTable = (await getCartById(cart.id)).itemsTable;
     const item = validValues.item;
@@ -66,8 +70,9 @@ async function cartData(request: Request, response: Response) {
 
     const result = getCartById(cart.id);
     response.status(200).send(result);
-  } catch (error) {
+  } catch (asyncError) {
     debugger;
+    const error = await asyncError;
     response.status(400).send(error.message);
   }
 }
