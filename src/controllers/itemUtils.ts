@@ -1,9 +1,13 @@
+import { isEmpty } from "../utils/utilityFunctions";
 import { sql } from "../models/database";
 
 export { getItemById };
 
 async function getItemById(id: number) {
-  await sql.initialize();
+  if (isEmpty(id)) throw new Error("ERROR: item id is required");
+  if (typeof id !== "number") throw new Error("ERROR: invalid item id");
+
+  await sql.initialized();
   const table = "item";
   const primaryKey = "id";
   const value = Number(id);

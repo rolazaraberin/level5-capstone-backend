@@ -1,19 +1,22 @@
 import { getItemById } from "./itemUtils";
 
-jest.setTimeout(25000);
+jest.setTimeout(2500);
 
 describe("getItemById()", () => {
   test("Given an id, it returns an item", getId);
-  test.skip("Given no id, it throws an error", noId);
-  test.skip("Given an object, it throws an error", objectId);
-  test.skip("Given an array, it throws an error", arrayId);
+  test("Given no id, it throws an error", noId);
+  test("Given an object, it throws an error", objectId);
+  test("Given an array, it throws an error", arrayId);
 });
 
 async function getId() {
   const id = 2;
   const item = await getItemById(id);
-  const result = Number(item.id);
-  expect(result).toBe(2);
+  const itemId = Number(item.id);
+  expect(itemId).toBe(id);
+  expect(item).toHaveProperty("name");
+  expect(item).toHaveProperty("price");
+  expect(item).toHaveProperty("description");
 }
 
 async function noId() {
