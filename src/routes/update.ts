@@ -3,8 +3,19 @@ import Knex from "knex";
 // import { omit, filter } from "lodash";
 import { getValidValues } from "../utilityFunctionsServer";
 import { Request, Response } from "express";
-import { getCartById } from "../controllers/cartUtils";
-import validate from "../middleware/validate";
+// import { getCartById, updateCart } from "../controllers/cartUtils";
+import {
+  getCartByToken,
+  getCartByUser,
+  getItemsTable,
+  updateCart,
+  setCart,
+} from "../controllers/cartUtils";
+// import validate from "../middleware/validate";
+import { validateCart } from "../controllers/validateUtils";
+import { handleAsyncError } from "../utils/errorUtils";
+import { Cart, User } from "../models/types";
+import { getCartId, getUserByToken } from "../controllers/userUtils";
 
 // const knex = getKnex(config, Knex);
 const knex = Knex(config);
@@ -55,25 +66,35 @@ function updateData(route: string) {
 async function cartData(request: Request, response: Response) {
   try {
     const validValues = getValidValues(request.body);
-    const table = "cart";
-    const cart = validValues.cart;
-    const user = validValues.user;
-    const cartIdMatches = { id: cart.id };
-    await validate.cart(cart, user);
-    await knex.table(table).update(cart).where(cartIdMatches);
+    // const table = "cart";
+    const user: User = validValues.user;
+    const cart: Cart = validValues.cart;
+    // const originalUser: User = await getUserByToken(user.email, user.token);
+    // const originalCart: Cart = await getCartByUser(originalUser);
+    // cart.itemsTable = originalCart?.itemsTable;
+    cart.id = await getCartId(user);
+    cart.itemsTable = await getItemsTable(cart);
+    // const cartIdMatches = { id: cart.id };
+    // // await validate.cart(cart, user);
+    await validateCart(cart, user);
+    // await knex.table(table).update(cart).where(cartIdMatches);
 
-    const itemsTable = (await getCartById(cart.id)).itemsTable;
+    // const itemsTable = (await getCartById(cart.id)).itemsTable;
+    // const itemID = item.id;
+    // const columnsMatchValues = { id: itemID };
+    // await knex.table(itemsTable).update(item).where(columnsMatchValues);
+    let result: any;
     const item = validValues.item;
-    const itemID = item.id;
-    const columnsMatchValues = { id: itemID };
-    await knex.table(itemsTable).update(item).where(columnsMatchValues);
-
-    const result = getCartById(cart.id);
+    const items = request?.body?.cart?.items;
+    if (item) result = await updateCart(cart, item);
+    else if (items) result = await setCart(cart, items);
+    // const result = getCartById(cart.id);
     response.status(200).send(result);
   } catch (asyncError) {
-    debugger;
-    const error = await asyncError;
-    response.status(400).send(error.message);
+    const { error, message, code } = await handleAsyncError(asyncError);
+    // debugger;
+    // const error = await asyncError;
+    response.status(code).send(message);
   }
 }
 
@@ -81,11 +102,11 @@ async function cartData(request: Request, response: Response) {
 //   debugger;
 // }
 
-function getKnex(config: KnexConfig, knex: any) {
-  switch (config.mode) {
-    case "development":
-      return knex(config.development);
-    case "production":
-      return knex(config.remote);
-  }
-}
+// function getKnex(config: KnexConfig, knex: any) {
+//   switch (config.mode) {
+//     case "development":
+//       return knex(config.development);
+//     case "production":
+//       return knex(config.remote);
+//   }
+// }

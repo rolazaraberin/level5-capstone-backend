@@ -1,19 +1,21 @@
-import config, { KnexConfig } from "../../knexfile";
-import Knex from "knex";
+// import config, { KnexConfig } from "../../knexfile";
+// import Knex from "knex";
 // import { updateData } from "./update";
 import { getValidValues } from "../utilityFunctionsServer";
 import { NextFunction, Request, Response } from "express";
 import { hash } from "../utils/utilityFunctions";
 import authenticate from "../controllers/authenticate";
 import { getCartById } from "../controllers/cartUtils";
+import { knex } from "../models/database";
 
 // const cartData = createData("cart");
 const inventoryData = createData("inventory");
 
-export default { manualData, cartData, inventoryData };
+// export default { manualData, cartData, inventoryData };
+export default { manualData, inventoryData };
 
 // const knex = getKnex(config, Knex);
-const knex = Knex(config);
+// const knex = Knex(config);
 
 function createData(route: string) {
   let mainTable: string;
@@ -59,53 +61,53 @@ function createData(route: string) {
   };
 }
 
-async function cartData(
-  request: Request,
-  response: Response,
-  next: NextFunction
-) {
-  try {
-    const validValues = getValidValues(request.body);
-    const cart = validValues.cart;
-    if (!cart) return next();
+// async function cartData(
+//   request: Request,
+//   response: Response,
+//   next: NextFunction
+// ) {
+//   try {
+//     const validValues = getValidValues(request.body);
+//     const cart = validValues.cart;
+//     if (!cart) return next();
 
-    const table = "cart";
-    try {
-      await knex.table(table).insert(cart);
-    } catch (dataAlreadyExists) {
-      await knex.table(table).update(cart);
-    }
+//     const table = "cart";
+//     try {
+//       await knex.table(table).insert(cart);
+//     } catch (dataAlreadyExists) {
+//       await knex.table(table).update(cart);
+//     }
 
-    const item = validValues.item;
-    // const itemsTable = await getItemsTable(cart.id);
-    const itemsTable = (await getCartById(cart.id)).itemsTable;
-    try {
-      await knex.table(itemsTable).insert(item);
-    } catch (dataAlreadyExists) {
-      await knex.table(itemsTable).update(item);
-    }
+//     const item = validValues.item;
+//     // const itemsTable = await getItemsTable(cart.id);
+//     const itemsTable = (await getCartById(cart.id)).itemsTable;
+//     try {
+//       await knex.table(itemsTable).insert(item);
+//     } catch (dataAlreadyExists) {
+//       await knex.table(itemsTable).update(item);
+//     }
 
-    // let result = {} as any;
-    // result.cart = await knex.table(table).select();
-    // result[itemsTable] = await knex.table(itemsTable).select();
-    const result = await getCartById(cart.id);
-    response.status(200).send(result);
-  } catch (error) {
-    response.status(400).send(error.message);
-  }
-}
+//     // let result = {} as any;
+//     // result.cart = await knex.table(table).select();
+//     // result[itemsTable] = await knex.table(itemsTable).select();
+//     const result = await getCartById(cart.id);
+//     response.status(200).send(result);
+//   } catch (error) {
+//     response.status(400).send(error.message);
+//   }
+// }
 
-async function getItemsTable(cartID: number) {
-  try {
-    const table = "cart";
-    const columnsMatchValues = { id: cartID };
-    const data = await knex.table(table).select().where(columnsMatchValues);
-    const itemsTable = data[0].itemsTable;
-    return itemsTable;
-  } catch (error) {
-    debugger;
-  }
-}
+// async function getItemsTable(cartID: number) {
+//   try {
+//     const table = "cart";
+//     const columnsMatchValues = { id: cartID };
+//     const data = await knex.table(table).select().where(columnsMatchValues);
+//     const itemsTable = data[0].itemsTable;
+//     return itemsTable;
+//   } catch (error) {
+//     debugger;
+//   }
+// }
 
 async function manualData(request: Request, response: Response) {
   try {
@@ -118,11 +120,11 @@ async function manualData(request: Request, response: Response) {
   }
 }
 
-function getKnex(config: KnexConfig, knex: any) {
-  switch (config.mode) {
-    case "development":
-      return knex(config.development);
-    case "production":
-      return knex(config.remote);
-  }
-}
+// function getKnex(config: KnexConfig, knex: any) {
+//   switch (config.mode) {
+//     case "development":
+//       return knex(config.development);
+//     case "production":
+//       return knex(config.remote);
+//   }
+// }

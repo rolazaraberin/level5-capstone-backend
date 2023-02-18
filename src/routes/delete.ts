@@ -2,7 +2,14 @@ import config, { KnexConfig } from "../../knexfile";
 import Knex from "knex";
 import { getValidValues } from "../utilityFunctionsServer";
 import { Request, Response } from "express";
-import { getCartById } from "../controllers/cartUtils";
+import {
+  getCartById,
+  getItemsTable,
+  removeItemFromCart,
+} from "../controllers/cartUtils";
+import { handleAsyncError } from "../utils/errorUtils";
+import { Cart, Item, User } from "../models/types";
+import { getCartId } from "../controllers/userUtils";
 
 // const knex = getKnex(config, Knex);
 const knex = Knex(config);
@@ -51,29 +58,34 @@ function deleteData(route: string) {
 
 async function cartData(request: Request, response: Response) {
   try {
-    // const { itemID, ...data } = request.body;
+    // // const { itemID, ...data } = request.body;
     const validValues = getValidValues(request.body);
-    // const cart = await cartUtils.get(cartID);
-    const cart = validValues.cart;
-    // const item = validValues.item;
-    const table = "public.cart";
-    await knex.table(table).update(cart);
+    // // const cart = await cartUtils.get(cartID);
+    const cart: Cart = validValues.cart;
+    const item: Item = validValues.item;
+    const user: User = validValues.user;
+    cart.id = await getCartId(user);
+    cart.itemsTable = await getItemsTable(cart);
+    const result = await removeItemFromCart(cart, item);
+    // const table = "public.cart";
+    // await knex.table(table).update(cart);
 
-    const cartID = validValues.cart.id;
-    const itemsTable = (await getCartById(cartID)).itemsTable;
-    const itemID = validValues.item.id;
-    const columnsMatchValues = { id: itemID };
-    //"itemID", "=", itemID
-    await knex.table(itemsTable).where(columnsMatchValues).delete();
+    // const cartID = validValues.cart.id;
+    // const itemsTable = (await getCartById(cartID)).itemsTable;
+    // const itemID = validValues.item.id;
+    // const columnsMatchValues = { id: itemID };
+    // //"itemID", "=", itemID
+    // await knex.table(itemsTable).where(columnsMatchValues).delete();
 
-    const result = await getCartById(cartID);
-    // const result = {} as any;
-    // result.cart = await knex.table(table).select();
-    // result[itemsTable] = await knex.table(itemsTable).select();
+    // const result = await getCartById(cartID);
+    // // const result = {} as any;
+    // // result.cart = await knex.table(table).select();
+    // // result[itemsTable] = await knex.table(itemsTable).select();
     response.status(200).send(result);
-  } catch (error) {
+  } catch (asyncError) {
     debugger;
-    response.status(400).send(error.message);
+    const { error, message, code } = await handleAsyncError(asyncError);
+    response.status(code).send(message);
   }
 }
 

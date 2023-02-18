@@ -1,4 +1,3 @@
-import httpCodes from "../utils/httpCodes";
 import express from "express";
 import urlHome from "./home";
 import { testPage } from "./testPage";
@@ -18,8 +17,8 @@ dotenv.config();
 
 //ROUTING - http://expressjs.com/en/guide/routing.html
 
-export const hostURL = process.env.host;
-export const URL = {
+export const hostUrl = process.env.host;
+export const url = {
   baseUrl: "/",
   api: "/api",
   cart: "/api/cart",
@@ -30,52 +29,45 @@ export const URL = {
   account: "/api/account",
   test: "/test",
 };
-export const fullURL = {
-  host: hostURL,
-  root: hostURL + URL.baseUrl,
-  api: hostURL + URL.api,
-  cart: hostURL + URL.cart,
-  inventory: hostURL + URL.inventory,
-  login: hostURL + URL.login,
-  logout: hostURL + URL.logout,
-  signup: hostURL + URL.signup,
-  account: hostURL + URL.account,
-  test: hostURL + URL.test,
+export const fullUrl = {
+  host: hostUrl,
+  root: hostUrl + url.baseUrl,
+  api: hostUrl + url.api,
+  cart: hostUrl + url.cart,
+  inventory: hostUrl + url.inventory,
+  login: hostUrl + url.login,
+  logout: hostUrl + url.logout,
+  signup: hostUrl + url.signup,
+  account: hostUrl + url.account,
+  test: hostUrl + url.test,
 };
 
 const router = express.Router();
-router.get(URL.baseUrl, urlHome);
-router.get(URL.test, testPage);
-router.post(URL.test, testPage);
-router.post(URL.api, create.manualData);
+router.get(url.baseUrl, urlHome);
+router.get(url.test, testPage);
+router.post(url.test, testPage);
+router.post(url.api, create.manualData);
 // router.get(URL.api, read.allData);
-router.get(URL.api, api.ping);
-router.put(URL.api, update.idKey);
-router.delete(URL.api, del.manualData);
+router.get(url.api, api.ping);
+router.put(url.api, update.idKey);
+router.delete(url.api, del.manualData);
 
-router.post(URL.cart, validate.token, create.cartData, read.cartData);
+// router.post(url.cart, validate.token, create.cartData, read.cartData);
 // router.get(URL.cart, validate.token, read.cartData);
-router.put(URL.cart, validate.token, update.cartData);
-router.delete(URL.cart, validate.token, del.cartData);
+router.post(url.cart, validate.token, read.cartData);
+router.put(url.cart, validate.token, update.cartData);
+router.delete(url.cart, validate.token, del.cartData);
 
-router.post(URL.inventory, create.inventoryData);
-router.get(URL.inventory, read.inventoryData);
-router.put(URL.inventory, update.inventoryData);
-router.put(URL.inventory, del.inventoryData);
+router.post(url.inventory, create.inventoryData);
+router.get(url.inventory, read.inventoryData);
+router.put(url.inventory, update.inventoryData);
+router.put(url.inventory, del.inventoryData);
 
-router.post(URL.login, login.withToken, login.withPassword);
-router.post(URL.logout, logout.withToken);
-router.post(URL.signup, signup.withPassword);
+router.post(url.login, login.withToken, login.withPassword);
+router.post(url.logout, logout.withToken);
+router.post(url.signup, signup.withPassword);
 // router.get(URL.account, account.fetchInfo);
-router.post(URL.account, account.fetchInfo);
-router.delete(URL.account, account.delete);
-
-export async function handleAsyncError(asyncError: any) {
-  const error = await asyncError;
-  const message = error.message;
-  let code = error.code;
-  if (!code || code >= 600) code = httpCodes.error.serverError;
-  return { error, code, message };
-}
+router.post(url.account, account.fetchInfo);
+router.delete(url.account, account.delete);
 
 export default router;
