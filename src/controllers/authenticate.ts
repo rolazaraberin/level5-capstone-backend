@@ -44,11 +44,11 @@ async function password(email: string, password: string) {
   //   .leftJoinAndSelect(Property, "user")
   //   .where(columnsMatchValues)
   //   .getOne();
-  const userID = data.user.id;
-  const token = data.token;
+  const userID = data?.user?.id;
+  const token = data?.token;
   // const userID = isEmpty(data) ? null : data[0].userID;
   // const token = isEmpty(data) ? null : data[0].token;
-  if (userID === null) {
+  if (!userID) {
     const error: any = new Error("ERROR: Incorrect email or password");
     error.code = httpCodes.error.unauthenticated;
     throw error;
