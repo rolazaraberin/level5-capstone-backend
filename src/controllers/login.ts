@@ -7,7 +7,7 @@ import { AuthData } from "../models/types";
 import authenticate from "./authenticate";
 import dbToken from "./dbToken";
 import httpCodes from "../utils/httpCodes";
-import { handleAsyncError } from "../routes/router";
+import { handleAsyncError } from "../utils/errorUtils";
 
 const login = { withToken, withPassword };
 export default login;

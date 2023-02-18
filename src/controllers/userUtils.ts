@@ -5,6 +5,7 @@ import authenticate from "./authenticate";
 import Login from "../models/entities/Login";
 import { handleAsyncError } from "../utils/errorUtils";
 import User from "../models/entities/User";
+import { User as UserWithToken } from "../models/types";
 import { getUserIdByPassword } from "./loginUtils";
 import { createCart } from "./cartUtils";
 import {
@@ -15,11 +16,19 @@ import {
 
 export {
   createUserByEmail,
+  getCartId,
   getUserById,
   getUserByToken,
   getUserByPassword,
   deleteUserById,
 };
+
+async function getCartId(user: UserWithToken) {
+  const { email, token, cartID } = user;
+  if (cartID) return cartID;
+  const userInfo = await getUserByToken(email, token);
+  return userInfo?.cartID;
+}
 
 async function getUserById(userID: number) {
   try {

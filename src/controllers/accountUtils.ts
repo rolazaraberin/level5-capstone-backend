@@ -23,6 +23,7 @@ async function createAccountByPassword(email: string, password: string) {
 async function getAccountByToken(email: string, token: string) {
   const user = await getUserByToken(email, token);
   const account = await getAccountById(user.id);
+  if (account) account.token = token;
   return account;
 }
 
