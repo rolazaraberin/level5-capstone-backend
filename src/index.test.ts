@@ -1,61 +1,98 @@
 import axios from "axios";
-import { fullURL } from "./routes/router";
-import dotenv from "dotenv";
-dotenv.config();
+import { fullUrl } from "./routes/router";
+// import dotenv from "dotenv";
+import { Cart, Item, User } from "./models/types";
+import { getCartByToken } from "./controllers/cartUtils";
+// dotenv.config();
 
 // const host = process.env.host;
 // const cartApi = URL.cart;
-const email = process.env.userEmail;
-const password = process.env.userPassword;
+// const email = process.env.userEmail;
+// const password = process.env.userPassword;
 jest.setTimeout(25000);
 
 describe("Backend server", () => {
-  it("should return error given invalid cart PUT request", testPutCartError);
-  it("should return success given valid cart PUT request", testPutCartSuccess);
-  it.skip(
-    "should error given invalid cart DELETE request",
+  test(
+    "Given invalid cart PUT request, it should return error",
+    testPutCartError
+  );
+  test(
+    "Given valid cart PUT request, it should return success",
+    testPutCartSuccess
+  );
+  test(
+    "Given invalid cart DELETE request, it should return error",
     testDeleteItemError
   );
-  it.skip(
-    "should success given invalid cart DELETE request",
+  test(
+    "Given valid cart DELETE request, it should return success",
     testDeleteItemSuccess
   );
 });
 
 async function testPutCartError() {
   const data = { cart: {}, item: {} };
-  const request = axios.put(fullURL.cart, data);
+  const request = axios.put(fullUrl.cart, data);
   await expect(request).rejects.toThrow();
 }
 
 async function testPutCartSuccess() {
-  const data = {
-    cart: { itemsTable: "cartItems1" },
-    item: { id: 3, itemID: 3 },
-    user: { email, password },
-  };
-  const request = axios.put(fullURL.cart, data);
-  await expect(request).resolves.not.toThrow();
+  const email = "correct@email.com";
+  const token =
+    "29a891b242d7f1aa62f2086cc18a60324f35a34e52c0f4d86f610622926bcdad";
+  const cart: Cart = await getCartByToken(email, token);
+  let item: Item = cart.items[0];
+  if (!item) item = { id: 3, itemID: 3, quantity: 0 };
+  const startingQuantity = Number(item.quantity);
+  item.quantity = Number(item.quantity) + 1;
+  const user: User = { email, token };
+  const data = { cart, item, user };
+  const result = await axios.put(fullUrl.cart, data);
+
+  const originalCartId = Number(cart.id);
+  const updatedCart: Cart = result.data;
+  const resultId = Number(updatedCart.id);
+  const newQuantity = Number(updatedCart.items[0].quantity);
+  expect(resultId).toBe(originalCartId);
+  expect(newQuantity).toBe(startingQuantity + 1);
 }
 
 async function testDeleteItemError() {
-  const data = {
-    data: {
-      cart: {},
-      item: {},
-    },
-  };
-  const request = axios.delete(fullURL.cart, data);
+  const data = { data: { cart: {}, item: {} } };
+  const request = axios.delete(fullUrl.cart, data);
   await expect(request).rejects.toThrow();
 }
 
 async function testDeleteItemSuccess() {
-  const data = {
-    data: {
-      cart: { itemsTable: "cartItems" },
-      item: { id: 1, itemID: 1 },
-    },
-  };
-  const request = axios.delete(fullURL.cart, data);
-  await expect(request).resolves.not.toThrow();
+  const email = "correct@email.com";
+  const token =
+    "29a891b242d7f1aa62f2086cc18a60324f35a34e52c0f4d86f610622926bcdad";
+  const user: User = { email, token };
+  const cart: Cart = await getCartByToken(email, token);
+  let item: Item = cart.items[0];
+  if (!item) item = await addItemToCart(cart, user);
+  const data = { data: { cart, item, user } };
+  const result = await axios.delete(fullUrl.cart, data);
+
+  const originalCartId = cart.id;
+  const originalItemId = item.id;
+  const updatedCart: Cart = result.data;
+  const resultId = updatedCart.id;
+  const resultItemId = updatedCart.items[0]?.id;
+
+  //ITEM SHOULD BE COMPLETELY REMOVED FROM CART
+  expect(resultId).toBe(originalCartId);
+  expect(resultItemId).not.toBe(originalItemId);
+}
+
+//UTILS///////////////////////////////////////////////
+
+async function addItemToCart(cart: Cart, user: User) {
+  const item: Item = { id: 2, quantity: 1 };
+  const data = { cart, item, user };
+  const result = await axios.put(fullUrl.cart, data);
+  const updatedCart = result.data;
+  const resultItem = updatedCart?.items[0];
+  expect(resultItem).toBeDefined();
+  return resultItem;
 }
