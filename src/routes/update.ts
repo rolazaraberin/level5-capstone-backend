@@ -76,7 +76,7 @@ async function cartData(request: Request, response: Response) {
     cart.itemsTable = await getItemsTable(cart);
     // const cartIdMatches = { id: cart.id };
     // // await validate.cart(cart, user);
-    await validateCart(cart, user);
+    // await validateCart(cart, user);
     // await knex.table(table).update(cart).where(cartIdMatches);
 
     // const itemsTable = (await getCartById(cart.id)).itemsTable;

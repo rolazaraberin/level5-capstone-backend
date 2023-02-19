@@ -73,8 +73,10 @@ async function createCart() {
 
 async function createItemsTableById(id: number) {
   const tableName = "cartItems" + id;
-  const likeTable = "cartItems1";
-  await knex.schema.createTableLike(tableName, likeTable);
+  // const likeTable = "cartItems1";
+  const similarTable = await getSimilarTable();
+  await knex.schema.createTableLike(tableName, similarTable);
+  // await knex.schema.createTable(tableName, likeTable);
   return tableName;
 }
 
@@ -103,6 +105,13 @@ async function getItemsTable(cart: Cart) {
   const data = await knex.table(table).select(column).where(cartIdMatches);
   const itemsTable = data[0].itemsTable;
   return itemsTable;
+}
+
+async function getSimilarTable() {
+  const table = "public.cart";
+  const carts = await knex.table(table).select().limit(1);
+  const likeTable = carts[0].itemsTable;
+  return likeTable;
 }
 
 async function removeItemFromCart(cart: Cart, item: Item) {
