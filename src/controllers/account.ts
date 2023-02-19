@@ -10,6 +10,7 @@ import Login from "../models/entities/Login";
 import dotenv from "dotenv";
 import { getCartById } from "./cartUtils";
 import { getUserById } from "./userUtils";
+import { handleAsyncError } from "../utils/errorUtils";
 import {
   deleteAccountByPassword,
   getAccountById,
@@ -33,12 +34,12 @@ async function fetchInfo(request: Request, response: Response) {
       return response.status(401).send("ERROR: Cannot retrieve account");
     response.status(200).send(account);
   } catch (asyncError) {
-    handleAsyncError(asyncError, response);
+    const { error, message, code } = await handleAsyncError(asyncError);
     // const error = await asyncError;
     // debugger;
     // const message = error.message;
     // const code = error.code;
-    // response.status(code).send(message);
+    response.status(code).send(message);
   }
 }
 
@@ -64,11 +65,12 @@ async function _delete(request: Request, response: Response) {
     response.status(200).send("SUCCESS: Account deleted");
     if (disableEmails !== "true") sendEmail.deleteConfirmation(email);
   } catch (asyncError) {
-    const error = await asyncError;
-    let message = error.message;
-    let code = error.code || httpCodes.error.general;
-    if (code === httpCodes.error.unauthenticated)
-      message = "ERROR: Incorrect password";
+    // const error = await asyncError;
+    // let message = error.message;
+    // let code = error.code || httpCodes.error.general;
+    // if (code === httpCodes.error.unauthenticated)
+    //   message = "ERROR: Incorrect password";
+    const { error, message, code } = await handleAsyncError(asyncError);
     response.status(code).send(message);
   }
 }
@@ -103,9 +105,9 @@ async function _delete(request: Request, response: Response) {
 //   const cartIdMatches = { id: cart.id };
 //   knex.table(table).delete().where(cartIdMatches);
 // }
-async function handleAsyncError(asyncError: any, response: Response) {
-  const error = await asyncError;
-  const message = error.message;
-  const code = error.code || httpCodes.error.general;
-  response.status(code).send(message);
-}
+// async function handleAsyncError(asyncError: any, response: Response) {
+//   const error = await asyncError;
+//   const message = error.message;
+//   const code = error.code || httpCodes.error.general;
+//   response.status(code).send(message);
+// }
