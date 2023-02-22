@@ -1,1 +1,1 @@
-module.exports={presets:["@babel/preset-env"],sourceMaps:"inline"};
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),module.exports={presets:["@babel/preset-env"],sourceMaps:"inline"};
