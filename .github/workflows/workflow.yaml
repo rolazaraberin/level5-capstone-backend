@@ -2,6 +2,8 @@ name: CI/CD Apprentice 1
 run-name: ${{ github.actor }} started GitHub Actions 🚀
 env:
   mode: cockroachdb
+  disableEmails: false
+  sendGridApiKey: ${{ vars.SENDGRIDAPIKEY }}
 on: [push]
 jobs:
   Test:
