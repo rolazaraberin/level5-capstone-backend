@@ -20,37 +20,41 @@ class addData1672176285655 implements MigrationInterface {
     const logins = queryRunner.manager.getRepository(Login);
 
     await createTables(users, logins);
+    await timeout(5000);
+    //NOTE: THIS FILE GETS INDEXED
+    //MAKE CHANGES FOR MIGRATION TO WORK
+
     let user: User, login: Login;
 
-    user = new User();
-    user.email = "rolazaraberin@gmail.com";
-    user.name = "Rolazar Aberin";
-    user.cartID = 1;
-    const rolazar = await users.save(user);
-    await timeout(9000);
+    //PERMANENT USER////////////////////////////////
+    //FOR TABLE DUPLICATION
 
     user = new User();
-    user.email = "correct@email.com";
-    user.name = "correct";
-    const correct = await users.save(user);
+    user.id = 1;
+    user.email = "permanent@email.com";
+    user.name = "permanent";
+    user.cartID = 1;
+    const permanent = await users.save(user);
     await timeout(3000);
 
     login = new Login();
     login.emailHash =
-      "1e9b4ffec7e769ede61e5ce942193ab13db7e9e8d170bb89b6411cfc7dec5e18";
+      "9f48863b648541998753fd09be67fd3d44440f51a8b1d5e9eef61d1365bbca4f";
     login.passwordHash =
-      "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8";
-    login.user = rolazar;
+      "0dd1b6d5c52eec73e28b235214478c1da599a278f8d7a3216b3ce36db39f29d4";
+    login.user = permanent;
     await logins.save(login);
-    await timeout(3000);
 
-    // await logins.save({
-    //   emailHash:
-    //     "1e9b4ffec7e769ede61e5ce942193ab13db7e9e8d170bb89b6411cfc7dec5e18",
-    //   passwordHash:
-    //     "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-    //   user: rolazar,
-    // });
+    //CORRECT USER////////////////////////////////////
+    //FOR TESTING PURPOSES
+
+    user = new User();
+    user.id = 2;
+    user.email = "correct@email.com";
+    user.name = "correct";
+    user.cartID = 2;
+    const correct = await users.save(user);
+    await timeout(3000);
 
     login = new Login();
     login.emailHash =
@@ -59,14 +63,7 @@ class addData1672176285655 implements MigrationInterface {
       "e231b8ff6659dcbbec5aaa6a252d132de5a8dfb8e40167c45e4eb0ffb71a7065";
     login.user = correct;
     await logins.save(login);
-
-    // await logins.save({
-    //   emailHash:
-    //     "425bee187ab12fdfe19ea39148510c2a7bf5fce9957f296b90a3dc478e280b78",
-    //   passwordHash:
-    //     "e231b8ff6659dcbbec5aaa6a252d132de5a8dfb8e40167c45e4eb0ffb71a7065",
-    //   user: correct,
-    // });
+    await timeout(3000);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
@@ -88,7 +85,6 @@ async function createTables(...repositories: Repository<any>[]) {
   //find() AND count() WILL CREATE A TABLE IF IT DOESN'T EXIST
   repositories.forEach(async (repository) => await repository.find());
   //DATABASE NEEDS MORE TIME FOR THE TABLE TO BE CREATED
-  await timeout(5000);
 }
 // function createUser(email: string, name?: string) {
 //   const user = new User();
