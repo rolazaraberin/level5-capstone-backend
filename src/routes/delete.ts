@@ -10,6 +10,7 @@ import {
 import { handleAsyncError } from "../utils/errorUtils";
 import { Cart, Item, User } from "../models/types";
 import { getCartId } from "../controllers/userUtils";
+import { validateCart, validateItem } from "../controllers/validateUtils";
 
 // const knex = getKnex(config, Knex);
 const knex = Knex(config);
@@ -58,42 +59,18 @@ function deleteData(route: string) {
 
 async function cartData(request: Request, response: Response) {
   try {
-    // // const { itemID, ...data } = request.body;
     const validValues = getValidValues(request.body);
-    // // const cart = await cartUtils.get(cartID);
     const cart: Cart = validValues.cart;
     const item: Item = validValues.item;
     const user: User = validValues.user;
+    validateCart(cart);
+    validateItem(item);
     cart.id = await getCartId(user);
     cart.itemsTable = await getItemsTable(cart);
     const result = await removeItemFromCart(cart, item);
-    // const table = "public.cart";
-    // await knex.table(table).update(cart);
-
-    // const cartID = validValues.cart.id;
-    // const itemsTable = (await getCartById(cartID)).itemsTable;
-    // const itemID = validValues.item.id;
-    // const columnsMatchValues = { id: itemID };
-    // //"itemID", "=", itemID
-    // await knex.table(itemsTable).where(columnsMatchValues).delete();
-
-    // const result = await getCartById(cartID);
-    // // const result = {} as any;
-    // // result.cart = await knex.table(table).select();
-    // // result[itemsTable] = await knex.table(itemsTable).select();
     response.status(200).send(result);
   } catch (asyncError) {
-    debugger;
     const { error, message, code } = await handleAsyncError(asyncError);
     response.status(code).send(message);
-  }
-}
-
-function getKnex(config: KnexConfig, knex: any) {
-  switch (config.mode) {
-    case "development":
-      return knex(config.development);
-    case "production":
-      return knex(config.remote);
   }
 }

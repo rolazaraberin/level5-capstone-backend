@@ -12,10 +12,11 @@ import {
   setCart,
 } from "../controllers/cartUtils";
 // import validate from "../middleware/validate";
-import { validateCart } from "../controllers/validateUtils";
+// import { validateCart } from "../controllers/validateUtils";
 import { handleAsyncError } from "../utils/errorUtils";
 import { Cart, User } from "../models/types";
 import { getCartId, getUserByToken } from "../controllers/userUtils";
+import { validateCart } from "../controllers/validateUtils";
 
 // const knex = getKnex(config, Knex);
 const knex = Knex(config);
@@ -69,6 +70,7 @@ async function cartData(request: Request, response: Response) {
     // const table = "cart";
     const user: User = validValues.user;
     const cart: Cart = validValues.cart;
+    validateCart(cart);
     // const originalUser: User = await getUserByToken(user.email, user.token);
     // const originalCart: Cart = await getCartByUser(originalUser);
     // cart.itemsTable = originalCart?.itemsTable;
