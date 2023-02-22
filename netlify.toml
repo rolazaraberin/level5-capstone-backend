@@ -10,7 +10,7 @@
 #   minify = false
 
 [build]
-  command = "npm run test-build"
+  command = "npm run test-production"
   publish = "public"
   
 [build.environment]

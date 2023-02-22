@@ -2,6 +2,6 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
-  rootDir: ".",
-  testPathIgnorePatterns: ["bak", "build"],
+  rootDir: "build",
+  testPathIgnorePatterns: ["bak", "index.test.js"],
 };
