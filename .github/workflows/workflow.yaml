@@ -4,6 +4,7 @@ env:
   mode: cockroachdb
   disableEmails: false
   sendGridApiKey: ${{ vars.SENDGRIDAPIKEY }}
+  cockroachdb: ${{ vars.COCKROACHDB }}
 on: [push]
 jobs:
   Test:
