@@ -9,6 +9,7 @@ export default sendEmail;
 sendGrid.setApiKey(process.env.sendGridApiKey as string);
 
 function signupConfirmation(email: string) {
+  if (isTestEmail(email)) return;
   const message: MailDataRequired = {
     from: "rolazaraberin.test@gmail.com",
     to: email,
@@ -20,6 +21,7 @@ function signupConfirmation(email: string) {
 }
 
 function deleteConfirmation(email: string) {
+  if (isTestEmail(email)) return;
   const message: MailDataRequired = {
     from: "rolazaraberin.test@gmail.com",
     to: email,
@@ -39,4 +41,16 @@ async function send(message: MailDataRequired) {
     console.log(error);
     debugger;
   }
+}
+
+function isTestEmail(email: string) {
+  switch (email) {
+    case "new@email.com":
+    case "temp@email.com":
+    case "temporary@email.com":
+    case "correct@email.com":
+    case "permanent@email.com":
+      return true;
+  }
+  return false;
 }

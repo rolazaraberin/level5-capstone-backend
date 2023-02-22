@@ -3,9 +3,11 @@ import { typeorm, knex } from "../models/database";
 import { hash } from "../utils/nodeUtils";
 import { isEmpty, quoteValues, generateKey } from "../utils/utilityFunctions";
 import Login from "../models/entities/Login";
-import User from "../models/entities/User";
+// import User from "../models/entities/User";
+import { Cart, User } from "../models/types";
 
 const authenticate = {
+  cart,
   password,
   token,
   email,
@@ -15,6 +17,17 @@ const authenticate = {
   // saveToken,
 };
 export default authenticate;
+
+async function cart(cart: Cart, user: User) {
+  const cartId = Number(cart?.id);
+  if (!cartId || !cart.itemsTable) throw new Error("ERROR: invalid cart id");
+  const userID = await authenticate.token(user.email, user.token);
+  if (cartId !== userID) {
+    const error = new Error("ERROR: forbidden access to cart") as any;
+    error.code = httpCodes.error.forbiddenUser;
+    throw error;
+  }
+}
 
 async function password(email: string, password: string) {
   // try {
@@ -61,7 +74,7 @@ async function password(email: string, password: string) {
 
 async function token(email: string, token: string) {
   if (isEmpty(email) || isEmpty(token)) {
-    const error: any = new Error("ERROR: email and password must be provided");
+    const error: any = new Error("ERROR: incorrect email or token");
     error.code = httpCodes.error.unauthenticated;
     throw error;
   }

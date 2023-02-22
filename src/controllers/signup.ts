@@ -26,7 +26,7 @@ async function withPassword(
   try {
     const { email, password } = request.body;
     await validate(email);
-    const user = await createAccountByPassword(email, password);
+    const { user } = await createAccountByPassword(email, password);
     const cart = await getCartByUser(user);
     response.status(200).send({ user, cart });
 

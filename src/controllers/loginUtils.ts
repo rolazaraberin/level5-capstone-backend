@@ -90,7 +90,8 @@ async function loginWithPassword(email: string, password: string) {
     relations: { user: true },
   });
   const token = data?.token;
-  const user = data?.user;
+  const user = data?.user as User;
+  user.token = token;
   if (!user) throw new Error("ERROR: invalid login");
   return { user, token };
   // const userID = data?.user?.id;

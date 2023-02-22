@@ -1,8 +1,16 @@
-import httpCodes from "../utils/httpCodes";
-import { Cart, User } from "../models/types";
+import httpCodes, { HttpError } from "../utils/httpCodes";
+import { Cart, Item, User } from "../models/types";
 import authenticate from "./authenticate";
 
-export { validateEmail, validateToken, validatePassword, validateCart };
+export {
+  validateEmail,
+  validateToken,
+  validatePassword,
+  validateCart,
+  validateCartId,
+  validateItem,
+  validateUser,
+};
 
 function validateEmail(email: string) {
   if (!email) throw new Error("ERROR: email is required");
@@ -19,13 +27,34 @@ function validatePassword(password: string) {
   if (typeof password !== "string") throw new Error("ERROR: invalid password");
 }
 
-async function validateCart(cart: Cart, user: User) {
-  const cartId = Number(cart?.id);
-  if (!cartId || !cart.itemsTable) throw new Error("ERROR: invalid cart id");
-  const userID = await authenticate.token(user.email, user.token);
-  if (cartId !== userID) {
-    const error = new Error("ERROR: forbidden access to cart") as any;
-    error.code = httpCodes.error.forbiddenUser;
+function validateCart(cart: Cart) {
+  if (!cart || !cart.id) {
+    const error = new Error("ERROR: invalid cart") as HttpError;
+    error.code = httpCodes.error.badRequest;
+    throw error;
+  }
+}
+
+function validateCartId(id: number) {
+  if (!id || typeof Number(id) !== "number") {
+    const error = new Error("ERROR: invalid cart") as HttpError;
+    error.code = httpCodes.error.badRequest;
+    throw error;
+  }
+}
+
+function validateItem(item: Item) {
+  if (!item || !item.id) {
+    const error = new Error("ERROR: invalid item") as HttpError;
+    error.code = httpCodes.error.badRequest;
+    throw error;
+  }
+}
+
+function validateUser(user: User) {
+  if (!user || !user.id) {
+    const error = new Error("ERROR: invalid user") as HttpError;
+    error.code = httpCodes.error.badRequest;
     throw error;
   }
 }
