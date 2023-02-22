@@ -3,8 +3,8 @@ run-name: ${{ github.actor }} started GitHub Actions 🚀
 env:
   mode: cockroachdb
   disableEmails: false
-  sendGridApiKey: ${{ vars.SENDGRIDAPIKEY }}
-  cockroachdb: ${{ vars.COCKROACHDB }}
+  sendGridApiKey: ${{ secrets.SENDGRIDAPIKEY }}
+  cockroachdb: ${{ secrets.COCKROACHDB }}
 on: [push]
 jobs:
   Test:
