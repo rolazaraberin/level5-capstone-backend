@@ -12,7 +12,10 @@ import {
   validateEmail,
   validatePassword,
   validateToken,
+  validateUser,
 } from "./validateUtils";
+import httpCodes, { HttpError } from "../utils/httpCodes";
+import { deleteAccountById } from "./accountUtils";
 
 export {
   createUserByEmail,
@@ -32,6 +35,7 @@ async function getCartId(user: UserWithToken) {
 
 async function getUserById(userID: number) {
   try {
+    if (!userID) throw new Error("ERROR: user id is required");
     let table = "public.user";
     let primaryKey = "id";
     const itemsColumn = "itemsTable";
@@ -56,20 +60,22 @@ async function getUserByToken(email: string, token: string) {
 
   const emailHash = hash(email);
   const columnsMatchValues = { emailHash, token };
-  try {
-    await typeorm.initialized();
-    const logins = typeorm.getRepository(Login);
+  // try {
+  await typeorm.initialized();
+  const logins = typeorm.getRepository(Login);
 
-    const data = await logins.findOne({
-      where: columnsMatchValues,
-      relations: { user: true },
-    });
-    const user = data?.user;
-    return user;
-  } catch (asyncError) {
-    const { error, code, message } = await handleAsyncError(asyncError);
-    debugger;
-  }
+  const data = await logins.findOne({
+    where: columnsMatchValues,
+    relations: { user: true },
+  });
+  const user: UserWithToken = data?.user;
+  validateUser(user);
+  user.token = token;
+  return user;
+  // } catch (asyncError) {
+  // const { error, code, message } = await handleAsyncError(asyncError);
+  // debugger;
+  // }
 }
 
 async function getUserByPassword(email: string, password: string) {
@@ -80,16 +86,25 @@ async function getUserByPassword(email: string, password: string) {
   validatePassword(password);
 
   const userId = await getUserIdByPassword(email, password);
-  if (userId) {
-    const user = await getUserById(userId);
-    return user;
-  } else return undefined;
+  if (!userId) {
+    const error = new Error("ERROR: invalid email or password") as HttpError;
+    error.code = httpCodes.error.incorrectCredentials;
+    throw error;
+  }
+  const user = await getUserById(userId);
+  return user;
 }
 
 async function deleteUserById(id: number) {
-  if (!id) throw new Error("ERROR: user id is required");
-  const results = await typeorm.getRepository(User).delete(id);
-  return results;
+  try {
+    if (!id) throw new Error("ERROR: user id is required");
+    const results = await typeorm.getRepository(User).delete(id);
+    return results;
+  } catch (foreignKeyConstraint) {
+    throw new Error(
+      "ERROR: must delete user cart and user login before deleting user"
+    );
+  }
 }
 
 async function createUserByEmail(email: string) {

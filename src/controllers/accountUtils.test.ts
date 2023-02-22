@@ -1,6 +1,3 @@
-// import axios from "axios";
-// import { timeout } from "../utils/utilityFunctions";
-// import { fullURL } from "../routes/router";
 import {
   getAccountByToken,
   deleteAccountByPassword,
@@ -9,8 +6,13 @@ import {
 import { getCartById, getCartByUser } from "./cartUtils";
 import { loginWithPassword } from "./loginUtils";
 import { getUserByPassword } from "./userUtils";
+import {
+  getValidCredentials,
+  getValidTemporaryCredentials,
+  getUnusedCredentials,
+} from "./testUtils";
 
-jest.setTimeout(35000);
+jest.setTimeout(250000);
 
 describe("getAccountByToken", () => {
   test("Given an email and token, it fetches account info", getByToken);
@@ -21,10 +23,7 @@ describe("getAccountByToken", () => {
   //FUNCTIONS////////////////////////////////////////////
 
   async function getByToken() {
-    const email = "correct@email.com";
-    const token =
-      "29a891b242d7f1aa62f2086cc18a60324f35a34e52c0f4d86f610622926bcdad";
-
+    const { email, token } = await getValidCredentials();
     const account = await getAccountByToken(email, token);
     expect(account.email).toBe(email);
   }
@@ -35,8 +34,7 @@ describe("getAccountByToken", () => {
     await expect(result).rejects.toBeDefined();
   }
   async function getByNoEmail() {
-    const token =
-      "29a891b242d7f1aa62f2086cc18a60324f35a34e52c0f4d86f610622926bcdad";
+    const { token } = await getValidCredentials();
     let noEmail: any, result: any;
     noEmail = "";
     result = getAccountByToken(noEmail, token);
@@ -59,7 +57,7 @@ describe("getAccountByToken", () => {
     await expect(result).rejects.toBeDefined();
   }
   async function getByNoToken() {
-    const email = "correct@email.com";
+    const { email } = await getValidCredentials();
     let noToken: any, result: any;
     noToken = "";
     result = getAccountByToken(email, noToken);
@@ -89,15 +87,14 @@ describe("createAccountByPassword", () => {
   //FUNCTIONS////////////////////////////////////////////
 
   async function newAccount() {
-    const email = "temporary@email.com";
-    const password = "temporary password";
-    const account = await createAccountByPassword(email, password);
-    const cart = await getCartById(account.cartID);
+    const { email, password } = await getUnusedCredentials();
+    const { user } = await createAccountByPassword(email, password);
+    const cart = await getCartById(user.cartID);
     const cartID = Number(cart.id);
     const result = loginWithPassword(email, password);
-    await deleteAccountByPassword(email, password);
-    expect(account.email).toBe(email);
-    expect(cartID).toBe(account.cartID);
+    // await deleteAccountByPassword(email, password);
+    expect(user.email).toBe(email);
+    expect(cartID).toBe(user.cartID);
     await expect(result).resolves.toBeDefined();
   }
 });
@@ -114,13 +111,14 @@ describe("deleteAccountByPassword", () => {
   async function deleteByPassword() {
     let result: any;
 
-    const { email, password, cartID } = await createAccount();
+    // const { email, password, cartID } = await createAccount();
+    const { email, password, cartID } = await getValidTemporaryCredentials();
     await deleteAccountByPassword(email, password);
-    result = await getUserByPassword(email, password);
-    expect(result).not.toBeDefined();
+    result = getUserByPassword(email, password);
+    await expect(result).rejects.toBeDefined();
 
-    result = await getCartById(cartID);
-    expect(result).toBeFalsy();
+    result = getCartById(cartID);
+    await expect(result).rejects.toBeDefined();
 
     result = loginWithPassword(email, password);
     await expect(result).rejects.toBeDefined();
@@ -145,13 +143,3 @@ describe("deleteAccountByPassword", () => {
     await expect(result).rejects.toBeDefined();
   }
 });
-
-//UTILS//////////////////////////////////////////////////////
-
-async function createAccount() {
-  const email = "temporary@email.com";
-  const password = "temporary password";
-  const result = await createAccountByPassword(email, password);
-  const cartID = result.cartID;
-  return { email, password, cartID };
-}

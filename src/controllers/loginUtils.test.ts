@@ -5,6 +5,12 @@ import {
   loginWithPassword,
   loginWithToken,
 } from "./loginUtils";
+import {
+  getUnusedCredentials,
+  getValidCredentials,
+  getValidTemporaryCredentials,
+  removeLoginRelationalTables,
+} from "./testUtils";
 import { createUserByEmail } from "./userUtils";
 
 jest.setTimeout(25000);
@@ -17,10 +23,11 @@ describe("deleteLoginByEmail", () => {
   //FUNCTIONS////////////////////////////////////////////
 
   async function deleteWithEmail() {
-    const { email, password } = await createLogin();
+    const { email, password, user } = await getValidTemporaryCredentials();
     await deleteLoginByEmail(email);
-    const result = await getUserIdByPassword(email, password);
-    expect(result).not.toBeDefined();
+    await removeLoginRelationalTables(user);
+    const result = loginWithPassword(email, password);
+    await expect(result).rejects.toBeDefined();
   }
 
   async function noEmail() {
@@ -76,14 +83,13 @@ describe("getUserIdByPassword", () => {
   //FUNCTIONS/////////////////////////////////////////////
 
   async function correctEmailPassword() {
-    const email = "correct@email.com";
-    const password = "correct password";
+    const { email, password } = await getValidCredentials();
     const userId = await getUserIdByPassword(email, password);
     expect(userId).toBeDefined();
   }
 
   async function noEmail() {
-    const password = "correct password";
+    const { password } = await getValidCredentials();
     let email: any, result: any;
 
     email = "";
@@ -100,7 +106,7 @@ describe("getUserIdByPassword", () => {
   }
 
   async function noPassword() {
-    const email = "correct@email.com";
+    const { email } = await getValidCredentials();
     let password: any, result: any;
 
     password = "";
@@ -131,7 +137,7 @@ describe("getUserIdByPassword", () => {
   }
 
   async function objectPassword() {
-    const email = "correct@email.com";
+    const { email } = await getValidCredentials();
     let password: any, result: any;
 
     password = {};
@@ -152,7 +158,7 @@ describe("getUserIdByPassword", () => {
   }
 
   async function objectEmail() {
-    const password = "correct password";
+    const { password } = await getValidCredentials();
     let email: any, result: any;
 
     email = {};
@@ -175,20 +181,17 @@ describe("getUserIdByPassword", () => {
 
 describe("createLoginByPassword", () => {
   test("Given an available email and password, it creates a login", async () => {
-    const email = "temp@email.com";
-    const password = "temp password";
+    const { email, password } = await getUnusedCredentials();
     const user = await createUserByEmail(email);
     await createLoginByPassword(email, password, user);
     const result = await getUserIdByPassword(email, password);
-    await deleteLoginByEmail(email);
     expect(result).toBe(user.id);
   });
 });
 
 describe("loginWithPassword", () => {
   test("Given correct email and password, it returns a user and token", async () => {
-    const email = "correct@email.com";
-    const password = "correct password";
+    const { email, password } = await getValidCredentials();
     const { user, token } = await loginWithPassword(email, password);
     expect(user.email).toBe(email);
     expect(token).toBeDefined();
@@ -197,20 +200,8 @@ describe("loginWithPassword", () => {
 
 describe("loginWithToken", () => {
   test("Given correct email and token, it returns a user", async () => {
-    const email = "correct@email.com";
-    const token =
-      "29a891b242d7f1aa62f2086cc18a60324f35a34e52c0f4d86f610622926bcdad";
+    const { email, token } = await getValidCredentials();
     const user = await loginWithToken(email, token);
     expect(user.email).toBe(email);
   });
 });
-
-//FUNCTIONS////////////////////////////////////////
-
-async function createLogin() {
-  const email = "temp@email.com";
-  const password = "temp password";
-  const user = await createUserByEmail(email);
-  await createLoginByPassword(email, password, user);
-  return { email, password, user };
-}

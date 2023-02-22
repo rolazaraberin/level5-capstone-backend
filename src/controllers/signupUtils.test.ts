@@ -1,4 +1,5 @@
 import { isSignupEmailAvailable } from "./signupUtils";
+import { getUnusedCredentials, getValidCredentials } from "./testUtils";
 
 jest.setTimeout(25000);
 
@@ -10,13 +11,13 @@ describe("isSignupEmailAvailable", () => {
 });
 
 async function emailAvailable() {
-  const email = "new@email.com";
+  const { email } = await getUnusedCredentials();
   const result = await isSignupEmailAvailable(email);
   expect(result).toBe(true);
 }
 
 async function emailUnavailable() {
-  const email = "correct@email.com";
+  const { email } = await getValidCredentials();
   const result = await isSignupEmailAvailable(email);
   expect(result).toBe(false);
 }

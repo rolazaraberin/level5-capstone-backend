@@ -3,6 +3,8 @@ import { knex, sql } from "../models/database";
 import { getUserByToken } from "./userUtils";
 import { Cart, Item } from "../models/types";
 import { getValidValues } from "../utilityFunctionsServer";
+import { validateCart, validateItem, validateCartId } from "./validateUtils";
+import { getNextAvailableId } from "./dbUtils";
 
 export {
   getCartById,
@@ -16,25 +18,16 @@ export {
   setCart,
   updateCart,
 };
-// export default cartUtils;
 
 async function getCartById(cartID: number) {
-  try {
-    const table = "public.cart";
-    // let idColumn = "id";
-    // sql = `SELECT * FROM ${table} WHERE ${idColumn} = ${account.cartID}`;
-    // data = await runRaw(sql);
-    // account.cart = data[0];
-
-    // table = "cart";
-    const columnsMatchValues = { id: cartID };
-    const data = await knex.table(table).select().where(columnsMatchValues);
-    const cart: Cart = data[0];
-    if (cart) cart.items = await getItemsByCart(cart);
-    return cart;
-  } catch (error) {
-    debugger;
-  }
+  validateCartId(cartID);
+  const table = "public.cart";
+  const columnsMatchValues = { id: cartID };
+  const data = await knex.table(table).select().where(columnsMatchValues);
+  const cart: Cart = data[0];
+  validateCart(cart);
+  cart.items = await getItemsByCart(cart);
+  return cart;
 }
 
 async function getCartByToken(email: string, token: string) {
@@ -61,10 +54,7 @@ async function deleteCartById(id: number) {
 async function createCart() {
   await sql.initialized();
   const table = "cart";
-  const command = `SELECT MAX(id) FROM ${table}`;
-  const data = await sql(command);
-  const lastId = Number(data[0].max);
-  const id = lastId + 1;
+  const id = await getNextAvailableId(table);
   const itemsTable = await createItemsTableById(id);
   const cart: Cart = { id, itemsTable };
   await knex.table(table).insert(cart);
@@ -73,27 +63,19 @@ async function createCart() {
 
 async function createItemsTableById(id: number) {
   const tableName = "cartItems" + id;
-  // const likeTable = "cartItems1";
   const similarTable = await getSimilarTable();
   await knex.schema.createTableLike(tableName, similarTable);
-  // await knex.schema.createTable(tableName, likeTable);
   return tableName;
 }
 
 async function getItemsByCart(cart: Cart) {
-  const foreignKey1 = cart.itemsTable;
-  const table1 = `public."${foreignKey1}"`;
+  const foreignTable = cart.itemsTable;
+  const table1 = `public."${foreignTable}"`;
   const table2 = "public.item";
-  const primaryKey1 = `${table1}.id`;
-  const primaryKey2 = `${table2}.id`;
-  const command = `SELECT * FROM ${table1} INNER JOIN ${table2} ON ${primaryKey1} = ${primaryKey2}`;
+  const foreignKey = `${table1}.id`;
+  const primaryKey = `${table2}.id`;
+  const command = `SELECT * FROM ${table1} INNER JOIN ${table2} ON ${foreignKey} = ${primaryKey}`;
   const data = await sql(command);
-  // const columnsMatchValues = {} as any;
-  // columnsMatchValues[`${primaryKey1}`] = primaryKey2;
-  // const data = await knex
-  //   .table(table)
-  //   .select()
-  //   .join(table2, columnsMatchValues);
   return data;
 }
 
@@ -110,24 +92,23 @@ async function getItemsTable(cart: Cart) {
 async function getSimilarTable() {
   const table = "public.cart";
   const carts = await knex.table(table).select().limit(1);
-  const likeTable = carts[0].itemsTable;
-  return likeTable;
+  const similarTable = carts[0].itemsTable;
+  return similarTable;
 }
 
 async function removeItemFromCart(cart: Cart, item: Item) {
+  validateCart(cart);
+  validateItem(item);
   const table = "public.cart";
-  const cartIdMatches = { id: cart.id };
+  const cartIdMatches = { id: cart?.id };
   await knex.table(table).update(cart).where(cartIdMatches);
 
-  // const cartID = validValues.cart.id;
-  // const cart: Cart = await getCartById(cartID);
   const itemsTable = cart.itemsTable;
-  const itemId = item.id;
-  const itemIdMatches = { id: itemId };
-  //"itemID", "=", itemID
+  const itemIdMatches = { id: item?.id };
+
   await knex.table(itemsTable).where(itemIdMatches).delete();
 
-  const result = await getCartById(cart.id);
+  const result = await getCartById(cart?.id);
   return result;
 }
 
@@ -136,7 +117,6 @@ async function setCart(cart: Cart, items: Item[]) {
   const cartIdMatches = { id: cart.id };
   let result = await knex.table(cartTable).update(cart).where(cartIdMatches);
 
-  // const items = cart.items;
   const itemsTable = cart.itemsTable;
   for (let item of items) {
     const itemIdMatches = { id: item.id };
@@ -158,7 +138,6 @@ async function updateCart(cart: Cart, item: Item) {
   const cartIdMatches = { id: cart.id };
   await knex.table(table).update(cart).where(cartIdMatches);
 
-  // cart = await getCartById(cart.id);
   const itemsTable = cart.itemsTable;
   const itemID = item.id;
   const itemIdMatches = { id: itemID };

@@ -5,6 +5,7 @@ import {
   getCartById,
   deleteCartById,
 } from "./cartUtils";
+import { getValidCredentials } from "./testUtils";
 
 jest.setTimeout(25000);
 
@@ -14,14 +15,15 @@ describe("createCart()", () => {
     expect(cartId).toBeDefined();
     const cart = await getCartById(cartId);
     const result = Number(cart.id);
-    expect(result).toBe(cartId);
     await deleteCartById(cartId);
+    expect(result).toBe(cartId);
   });
 });
 
 describe("getItemsByCart()", () => {
   test("Given a cart, it returns its items", async () => {
-    const cart = await getCartById(2);
+    const { cartID } = await getValidCredentials();
+    const cart = await getCartById(cartID);
     const result = await getItemsByCart(cart);
     if (isArrayEmpty(result)) expect(result).toBeDefined();
     else {
@@ -38,7 +40,7 @@ describe("deleteCartById()", () => {
   test("Given a cart id, it deletes the cart", async () => {
     const id = await createCart();
     await deleteCartById(id);
-    const result = await getCartById(id);
-    expect(result).not.toBeDefined();
+    const result = getCartById(id);
+    await expect(result).rejects.toBeDefined();
   });
 });
