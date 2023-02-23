@@ -43,17 +43,13 @@ export const fullUrl = {
 };
 
 const router = express.Router();
-router.get(url.baseUrl, urlHome);
-router.get(url.test, testPage);
-router.post(url.test, testPage);
-router.post(url.api, create.manualData);
-// router.get(URL.api, read.allData);
-router.get(url.api, api.ping);
-router.put(url.api, update.idKey);
-router.delete(url.api, del.manualData);
 
-// router.post(url.cart, validate.token, create.cartData, read.cartData);
-// router.get(URL.cart, validate.token, read.cartData);
+router.post(url.login, login.withToken, login.withPassword);
+router.post(url.logout, logout.withToken);
+router.post(url.signup, signup.withPassword);
+router.post(url.account, account.fetchInfo);
+router.delete(url.account, account.delete);
+
 router.post(url.cart, validate.token, read.cartData);
 router.put(url.cart, validate.token, update.cartData);
 router.delete(url.cart, validate.token, del.cartData);
@@ -63,11 +59,12 @@ router.get(url.inventory, read.inventoryData);
 router.put(url.inventory, update.inventoryData);
 router.put(url.inventory, del.inventoryData);
 
-router.post(url.login, login.withToken, login.withPassword);
-router.post(url.logout, logout.withToken);
-router.post(url.signup, signup.withPassword);
-// router.get(URL.account, account.fetchInfo);
-router.post(url.account, account.fetchInfo);
-router.delete(url.account, account.delete);
+router.get(url.baseUrl, urlHome);
+router.get(url.test, testPage);
+router.post(url.test, testPage);
+router.post(url.api, create.manualData);
+router.get(url.api, api.ping);
+router.put(url.api, update.idKey);
+router.delete(url.api, del.manualData);
 
 export default router;
