@@ -39,6 +39,7 @@ async function send(message: MailDataRequired) {
     return result[0].statusCode;
   } catch (asyncError) {
     const { error, code, message } = await handleAsyncError(asyncError);
+    console.log(error);
     debugger;
   }
 }

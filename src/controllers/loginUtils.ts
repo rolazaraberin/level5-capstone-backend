@@ -31,9 +31,9 @@ async function createLoginByPassword(
   await typeorm.initialized();
   const emailHash = hash(email);
   const passwordHash = hash(password);
-  const emailAndPassword = { emailHash, passwordHash, user };
+  const loginInfo = { emailHash, passwordHash, user };
   const logins = typeorm.getRepository(Login);
-  await logins.insert(emailAndPassword);
+  await logins.insert(loginInfo);
 }
 async function deleteLoginByEmail(email: string) {
   validateEmail(email);
