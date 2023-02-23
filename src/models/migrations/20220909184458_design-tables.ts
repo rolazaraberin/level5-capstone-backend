@@ -1,5 +1,3 @@
-// export default { up, down };
-
 export async function up(table: any) {
   return await table.schema
     .createTable("item", function (column: any) {
