@@ -1,5 +1,5 @@
 import { User } from "../models/types";
-import { createCart, deleteCartById, getCartById } from "./cartUtils";
+import { deleteCartById, getCartById } from "./cartUtils";
 import dbToken from "./dbToken";
 import { createLoginByPassword, deleteLoginByEmail } from "./loginUtils";
 import httpCodes from "../utils/httpCodes";

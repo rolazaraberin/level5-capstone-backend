@@ -1,9 +1,6 @@
 import { hash } from "../utils/nodeUtils";
 import { sql, typeorm } from "../models/database";
-import authenticate from "./authenticate";
-// import { User } from "../models/types";
 import Login from "../models/entities/Login";
-import { handleAsyncError } from "../utils/errorUtils";
 import User from "../models/entities/User";
 import { User as UserWithToken } from "../models/types";
 import { getUserIdByPassword } from "./loginUtils";
@@ -15,7 +12,6 @@ import {
   validateUser,
 } from "./validateUtils";
 import httpCodes, { HttpError } from "../utils/httpCodes";
-import { deleteAccountById } from "./accountUtils";
 
 export {
   createUserByEmail,
@@ -50,17 +46,11 @@ async function getUserById(userID: number) {
 }
 
 async function getUserByToken(email: string, token: string) {
-  // if (!email) throw new Error("ERROR: email must be provided");
-  // if (!token) throw new Error("ERROR: token must be provided");
-  // if (typeof email !== "string") throw new Error("ERROR: invalid email");
-  // if (typeof token !== "string") throw new Error("ERROR: invalid token");
-
   validateEmail(email);
   validateToken(token);
 
   const emailHash = hash(email);
   const columnsMatchValues = { emailHash, token };
-  // try {
   await typeorm.initialized();
   const logins = typeorm.getRepository(Login);
 
@@ -72,16 +62,9 @@ async function getUserByToken(email: string, token: string) {
   validateUser(user);
   user.token = token;
   return user;
-  // } catch (asyncError) {
-  // const { error, code, message } = await handleAsyncError(asyncError);
-  // debugger;
-  // }
 }
 
 async function getUserByPassword(email: string, password: string) {
-  // if (!email) throw new Error("ERROR: email must be provided");
-  // if (!password) throw new Error("ERROR: password must be provided");
-
   validateEmail(email);
   validatePassword(password);
 
@@ -108,9 +91,6 @@ async function deleteUserById(id: number) {
 }
 
 async function createUserByEmail(email: string) {
-  // if (!email) throw new Error("ERROR: email is required");
-  // if (typeof email !== "string") throw new Error("ERROR: invalid email");
-
   validateEmail(email);
 
   await typeorm.initialized();

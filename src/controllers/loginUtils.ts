@@ -6,8 +6,11 @@ import { User } from "../models/types";
 import {
   validateEmail,
   validatePassword,
+  validateSignupEmailAvailable,
   validateToken,
+  validateUser,
 } from "./validateUtils";
+import dbToken from "./dbToken";
 export {
   createLoginByPassword,
   getUserIdByPassword,
@@ -21,15 +24,10 @@ async function createLoginByPassword(
   password: string,
   user: User
 ) {
-  // if (!email) throw new Error("ERROR: email required");
-  // if (!password) throw new Error("ERROR: password required");
-
   validateEmail(email);
   validatePassword(password);
-  if (!user) throw new Error("ERROR: user is required");
-
-  if (!isSignupEmailAvailable(email))
-    throw new Error("ERROR: email is not available");
+  validateUser(user, "ERROR: user is required");
+  validateSignupEmailAvailable(email);
 
   await typeorm.initialized();
   const emailHash = hash(email);
@@ -39,8 +37,6 @@ async function createLoginByPassword(
   await logins.insert(emailAndPassword);
 }
 async function deleteLoginByEmail(email: string) {
-  // if (!email) throw new Error("ERROR: email must be provided");
-
   validateEmail(email);
 
   const emailHash = hash(email);
@@ -50,9 +46,6 @@ async function deleteLoginByEmail(email: string) {
 }
 
 async function getUserIdByPassword(email: string, password: string) {
-  // if (!email) throw new Error("ERROR: email required");
-  // if (!password) throw new Error("ERROR: password required");
-
   validateEmail(email);
   validatePassword(password);
 
@@ -66,17 +59,11 @@ async function getUserIdByPassword(email: string, password: string) {
     where: passwordMatches,
     relations: { user: true },
   });
-  // const data = await logins.findOneBy(emailAndPassword);
   const userId = data?.user?.id;
   return userId;
 }
 
 async function loginWithPassword(email: string, password: string) {
-  // if (!email) throw new Error("ERROR: email is required");
-  // if (!password) throw new Error("ERROR: password is required");
-  // if (typeof email !== "string") throw new Error("ERROR: invalid email");
-  // if (typeof password !== "string") throw new Error("ERROR: invalid password");
-
   validateEmail(email);
   validatePassword(password);
 
@@ -89,26 +76,18 @@ async function loginWithPassword(email: string, password: string) {
     where: columnsMatchValues,
     relations: { user: true },
   });
-  const token = data?.token;
+  let token = data?.token;
+  if (!token) {
+    token = dbToken.getNew(email);
+    await dbToken.save(email, token);
+  }
   const user = data?.user as User;
-  user.token = token;
   if (!user) throw new Error("ERROR: invalid login");
+  user.token = token;
   return { user, token };
-  // const userID = data?.user?.id;
-  // if (!userID) {
-  //   const error = new Error("ERROR: Invalid email or token") as any;
-  //   error.code = httpCodes.error.unauthenticated;
-  //   throw error;
-  // }
-  // return userID;
 }
 
 async function loginWithToken(email: string, token: string) {
-  // if (!email) throw new Error("ERROR: email is required");
-  // if (!token) throw new Error("ERROR: token is required");
-  // if (typeof email !== "string") throw new Error("ERROR: invalid email");
-  // if (typeof token !== "string") throw new Error("ERROR: invalid token");
-
   validateEmail(email);
   validateToken(token);
 
@@ -122,11 +101,4 @@ async function loginWithToken(email: string, token: string) {
   const user = data?.user;
   if (!user) throw new Error("ERROR: invalid login");
   return user;
-  // const userID = data?.user?.id;
-  // if (!userID) {
-  //   const error = new Error("ERROR: Invalid email or token") as any;
-  //   error.code = httpCodes.error.unauthenticated;
-  //   throw error;
-  // }
-  // return userID;
 }

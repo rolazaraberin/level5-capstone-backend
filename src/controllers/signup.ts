@@ -1,12 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { sql as runRaw, knex, typeorm } from "../models/database";
+import { typeorm } from "../models/database";
 import { isEmpty } from "../utils/utilityFunctions";
 import { hash } from "../utils/nodeUtils";
 import sendEmail from "./sendEmail";
-import dbToken from "./dbToken";
-import { AuthData } from "../models/types";
 import Login from "../models/entities/Login";
-import User from "../models/entities/User";
 import dotenv from "dotenv";
 import { createAccountByPassword } from "./accountUtils";
 import { getCartByUser } from "./cartUtils";
@@ -48,20 +45,4 @@ async function validate(email: string) {
     error.code = 409;
     throw error;
   } else return "Email validated";
-}
-
-async function createLogin(email: string, password: string, user: User) {
-  const emailHash = hash(email);
-  const passwordHash = hash(password);
-  const login = new Login();
-  login.emailHash = emailHash;
-  login.passwordHash = passwordHash;
-  login.user = user;
-  return login;
-}
-
-function createAccount(email: string) {
-  const user = new User();
-  user.email = email;
-  return user;
 }

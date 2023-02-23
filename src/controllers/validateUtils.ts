@@ -1,6 +1,7 @@
 import httpCodes, { HttpError } from "../utils/httpCodes";
 import { Cart, Item, User } from "../models/types";
 import authenticate from "./authenticate";
+import { isSignupEmailAvailable } from "./signupUtils";
 
 export {
   validateEmail,
@@ -9,6 +10,7 @@ export {
   validateCart,
   validateCartId,
   validateItem,
+  validateSignupEmailAvailable,
   validateUser,
 };
 
@@ -51,9 +53,14 @@ function validateItem(item: Item) {
   }
 }
 
-function validateUser(user: User) {
+function validateSignupEmailAvailable(email: string) {
+  if (!isSignupEmailAvailable(email))
+    throw new Error("ERROR: email is not available");
+}
+
+function validateUser(user: User, errorMessage = "ERROR: invalid user") {
   if (!user || !user.id) {
-    const error = new Error("ERROR: invalid user") as HttpError;
+    const error = new Error(errorMessage) as HttpError;
     error.code = httpCodes.error.badRequest;
     throw error;
   }
