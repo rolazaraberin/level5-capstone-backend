@@ -1,4 +1,3 @@
-// import "reflect-metadata";
 import { DataSource } from "typeorm";
 import User from "./src/models/entities/User";
 import Login from "./src/models/entities/Login";
@@ -10,10 +9,20 @@ const databaseName = process.env.mode as string;
 const AppDataSource = getDataSource(databaseName) as DataSource;
 
 export default AppDataSource;
-// export { AppDataSource };
 
 function getDataSource(dataSourceName: string) {
   const dataSources: any = {
+    cockroachdb: new DataSource({
+      type: "cockroachdb",
+      url: process.env.cockroachdb,
+      ssl: true,
+      //ssl: { rejectUnauthorized: false }, //FOR INSECURE CONNECTIONS ONLY
+      synchronize: true,
+      logging: false,
+      entities: [User, Login],
+      migrations: [addData1672176285655],
+      subscribers: [],
+    }),
     mysql: new DataSource({
       type: "mysql",
       host: "localhost",
@@ -29,17 +38,6 @@ function getDataSource(dataSourceName: string) {
     elephantsql: new DataSource({
       type: "postgres",
       url: process.env.elephantsql,
-      synchronize: true,
-      logging: false,
-      entities: [User, Login],
-      migrations: [addData1672176285655],
-      subscribers: [],
-    }),
-    cockroachdb: new DataSource({
-      type: "cockroachdb",
-      url: process.env.cockroachdb,
-      ssl: true,
-      //ssl: { rejectUnauthorized: false }, //FOR INSECURE CONNECTIONS ONLY
       synchronize: true,
       logging: false,
       entities: [User, Login],
