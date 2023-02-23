@@ -1,7 +1,6 @@
 import { hash } from "../utils/nodeUtils";
 import { typeorm } from "../models/database";
 import Login from "../models/entities/Login";
-import { isSignupEmailAvailable } from "./signupUtils";
 import { User } from "../models/types";
 import {
   validateEmail,

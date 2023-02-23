@@ -1,6 +1,5 @@
 import httpCodes, { HttpError } from "../utils/httpCodes";
 import { Cart, Item, User } from "../models/types";
-import authenticate from "./authenticate";
 import { isSignupEmailAvailable } from "./signupUtils";
 
 export {

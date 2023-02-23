@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { AuthData } from "../models/types";
 import authenticate from "./authenticate";
 import dbToken from "./dbToken";
-import httpCodes from "../utils/httpCodes";
 import { handleAsyncError } from "../utils/errorUtils";
 
 const login = { withToken, withPassword };
@@ -12,9 +11,6 @@ async function withPassword(request: Request, response: Response) {
   const { email, password } = request.body;
   try {
     const { token } = await authenticate.password(email, password);
-    // const { userID, token } = await authenticate.password(email, password);
-    // if (!userID)
-    //   return response.status(401).send("ERROR: Incorrect email or password");
     const authInfo: AuthData = { email, token, isTemporary: false };
     if (!token) {
       authInfo.token = dbToken.getNew(email);
@@ -24,11 +20,6 @@ async function withPassword(request: Request, response: Response) {
   } catch (asyncError) {
     const { error, code, message } = await handleAsyncError(asyncError);
     response.status(code).send(message);
-    // const error = await asyncError;
-    // const message = error.message;
-    // let code = error.code || httpCodes.error.general;
-    // if (code >= 600 || typeof code === "string")
-    //   code = httpCodes.error.serverError;
   }
 }
 

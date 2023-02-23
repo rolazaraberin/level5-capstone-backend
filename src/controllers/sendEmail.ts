@@ -1,5 +1,6 @@
 import sendGrid, { MailDataRequired } from "@sendgrid/mail";
 import dotenv from "dotenv";
+import { handleAsyncError } from "../utils/errorUtils";
 dotenv.config();
 
 const sendEmail = { signupConfirmation, deleteConfirmation };
@@ -34,11 +35,10 @@ function deleteConfirmation(email: string) {
 
 async function send(message: MailDataRequired) {
   try {
-    const response = await sendGrid.send(message);
-    return response[0].statusCode;
+    const result = await sendGrid.send(message);
+    return result[0].statusCode;
   } catch (asyncError) {
-    const error = await asyncError;
-    console.log(error);
+    const { error, code, message } = await handleAsyncError(asyncError);
     debugger;
   }
 }
