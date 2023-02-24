@@ -43,7 +43,7 @@ export const fullUrl = {
 };
 
 const router = express.Router();
-
+/////////////////////////////
 router.post(url.login, login.withToken, login.withPassword);
 router.post(url.logout, logout.withToken);
 router.post(url.signup, signup.withPassword);
